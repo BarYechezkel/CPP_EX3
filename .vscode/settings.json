@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "iostream": "cpp",
+        "bit": "cpp",
+        "*.tcc": "cpp",
+        "exception": "cpp",
+        "algorithm": "cpp",
+        "cmath": "cpp",
+        "functional": "cpp",
+        "random": "cpp",
+        "istream": "cpp",
+        "limits": "cpp",
+        "numeric": "cpp",
+        "ostream": "cpp",
+        "streambuf": "cpp",
+        "system_error": "cpp",
+        "typeinfo": "cpp"
+    }
+}
