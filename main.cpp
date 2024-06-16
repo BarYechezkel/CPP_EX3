@@ -14,7 +14,15 @@ int main()
     Board board;
     Catan catan(p1, p2, p3 , board);
     catan.StartGame();
-    catan.progressGame();
+    // cout << "enter cin"<<endl;
+    // int x;
+    // cin >> x;
+    // while (p1.placeSettlement(board, x) == 0)
+    // {
+    //     cout << "enter cin"<<endl;
+    //     cin >> x;
+    // }
+     catan.progressGame();
 
     // board.printBoard();
     //    board.printBoard();

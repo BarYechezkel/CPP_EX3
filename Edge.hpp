@@ -23,33 +23,14 @@ class Edge {
     Edge(int id_num, Vertex* v1, Vertex* v2) : id_num(id_num), vertex1(v1), vertex2(v2), hasRoad(false), player_color(0) {}
     Edge(){};
 
-   
-
+  
     void buildRoad(int color);
     void printEdge();
-    int getId(){
-        return id_num;
-    }
-
-    Vertex* getVertex1(){
-        return vertex1;
-    }
-
-    Vertex* getVertex2(){
-        return vertex2;
-    }
-
-    bool getHasRoad(){
-        return hasRoad;
-    }
-
-    int getPlayerColor(){
-        return player_color;
-    }
-
-
-
-
+    int getId() const;
+    Vertex* getVertex1() const;
+    Vertex* getVertex2() const;
+    bool getHasRoad() const;
+    int getPlayerColor() const;
 };
 
-#endif //EDGE_HPP
+#endif // EDGE_HPP

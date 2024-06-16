@@ -5,14 +5,11 @@
 #include <vector>
 #include <string>
 #include <iostream>
-//using namespace std;
 
 #define RED 1
 #define BLUE 2
 #define GREEN 3
 
-// class Player;
-// class Board;
 
 
 class Catan{
@@ -23,8 +20,7 @@ private:
     Player &p3;
     Board &board;
 
-    //set color of player
-    void SetPlayerColor();
+    
 
 
     public:
@@ -34,19 +30,18 @@ private:
     void ChooseStartingPlayer();
     //progress the game
     void progressGame();
-
-    
-
+    //set color to player
+    void SetPlayerColor();
+    void turn(Board &board, Player &player,Player &p2, Player &p3);
     void printWinner();
-
-    Board getBoard(){
-        return board;
-    }
-
+    Board getBoard();
     void StartGame();
     void firstTour(Board &board);
+    void Dice7();
     void playerResources(Board &board);
-
+    void ResourceDistribution(Board &board, int diceRoll);
 };
 
 #endif//CATAN_HPP
+
+

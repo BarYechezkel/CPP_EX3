@@ -26,7 +26,7 @@ void Board::Init_Board()
     Edge edge6(6, &vertices[3], &vertices[7]);
     Edge edge7(7, &vertices[4], &vertices[8]);
     Edge edge8(8, &vertices[5], &vertices[9]);
-    Edge edge9(9, &vertices[6], &vertices[1]);
+    Edge edge9(9, &vertices[6], &vertices[10]);
     Edge edge10(10, &vertices[7], &vertices[11]);
     Edge edge11(11, &vertices[7], &vertices[12]);
     Edge edge12(12, &vertices[8], &vertices[12]);
@@ -363,3 +363,26 @@ void Board::InitVerticesAdjacencyEdges()
     vertices[53].addEdges({&edges[71]});
 
 }
+
+
+// Knight Cards (Soldier Cards):3 cards
+// Victory Point Cards: 4 cards
+// Road Building Cards: 2 cards
+// Year of Plenty Cards: 2 cards
+// Monopoly Cards: 2 cards
+// void Board::InitializationDevCards() {
+//     devCards.push_back(std::make_unique<knight>());
+//     devCards.push_back(std::make_unique<knight>());
+//     devCards.push_back(std::make_unique<knight>());
+//     devCards.push_back(std::make_unique<victory_point>());
+//     devCards.push_back(std::make_unique<victory_point>());
+//     devCards.push_back(std::make_unique<victory_point>());
+//     devCards.push_back(std::make_unique<victory_point>());
+//     devCards.push_back(std::make_unique<road_building>());
+//     devCards.push_back(std::make_unique<road_building>());
+//     devCards.push_back(std::make_unique<year_of_plenty>());
+//     devCards.push_back(std::make_unique<year_of_plenty>());
+//     devCards.push_back(std::make_unique<monopoly>());
+//     devCards.push_back(std::make_unique<monopoly>());
+// }
+
