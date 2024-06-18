@@ -2,9 +2,7 @@
 #include "Player.hpp"
 #include "Board.hpp"
 #include <iostream>
-//using namespace std;
-
-
+// using namespace std;
 
 int main()
 {
@@ -12,8 +10,17 @@ int main()
     Player p2("Player2");
     Player p3("Player3");
     Board board;
-    Catan catan(p1, p2, p3 , board);
+    Catan catan(p1, p2, p3, board);
     catan.StartGame();
+    catan.progressGame();
+    // p1.setColor(2);
+    // p1.placeSettlementFirst(board,8);
+    // p1.placeRoad(board,12);
+    // p1.placeRoad(board,11);
+    // p1.placeSettlement(board,7);
+    // p1.placeRoad(board,10);
+    // board.printBoard();
+
     // cout << "enter cin"<<endl;
     // int x;
     // cin >> x;
@@ -22,26 +29,25 @@ int main()
     //     cout << "enter cin"<<endl;
     //     cin >> x;
     // }
-     catan.progressGame();
 
     // board.printBoard();
     //    board.printBoard();
     //  //  p1.placeSettlement(board, 0);
     //    p1.placeRoad(board, 0);
     //     p1.placeCity(board, 0);
-       p1.printResources();
-         board.printBoard();
+    //    p1.printResources();
+    //  board.printBoard();
 
-//     p2.placeSettlement(board, 3);
-//     p1.placeSettlement(board, 4);
-//     p3.placeSettlement(board, 7);
-//     p2.placeSettlement(board, 4);
-//     board.getVertex(3)->printVertex();
-//     p2.placeRoad(board, 0);
-//     p1.placeRoad(board, 4);
-//     p2.placeCity(board, 3);
+    //     p2.placeSettlement(board, 3);
+    //     p1.placeSettlement(board, 4);
+    //     p3.placeSettlement(board, 7);
+    //     p2.placeSettlement(board, 4);
+    //     board.getVertex(3)->printVertex();
+    //     p2.placeRoad(board, 0);
+    //     p1.placeRoad(board, 4);
+    //     p2.placeCity(board, 3);
 
-//    board.printBoard();
-    // catan.getBoard().printBoard();
+    //    board.printBoard();
+    catan.getBoard().printBoard();
     return 0;
 }

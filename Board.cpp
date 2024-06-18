@@ -208,26 +208,12 @@ void Board::Init_Board()
 
 Vertex* Board::getVertex(int id_num)
 {
-    for (size_t i = 0; i < vertices.size(); i++)
-    {
-        if (vertices[i].getId() == id_num)
-        {
-            return &vertices[i];
-        }
-    }
-    return NULL;
+    return &vertices[id_num];
 }
 
 Edge* Board::getEdge(int id_num)
 {
-    for (size_t i = 0; i < edges.size(); i++)
-    {
-        if (edges[i].getId() == id_num)
-        {
-            return &edges[i];
-        }
-    }
-    return NULL;
+    return &edges[id_num];
 }
 
 void Board::InitResourcesAndNumbers()
@@ -301,6 +287,7 @@ void Board::InitVerticesResources()
         for (size_t j = 0; j < tiles[i].getVertices().size(); j++)
         {
             tiles[i].getVertices()[j]->addResource(resource);
+            // cout << "Vertex " << tiles[i].getVertices()[j]->getId() << " has resource " << resource << endl;
         }
     }
 }
@@ -365,11 +352,11 @@ void Board::InitVerticesAdjacencyEdges()
 }
 
 
-// Knight Cards (Soldier Cards):3 cards
-// Victory Point Cards: 4 cards
-// Road Building Cards: 2 cards
-// Year of Plenty Cards: 2 cards
-// Monopoly Cards: 2 cards
+// // Knight Cards (Soldier Cards):3 cards
+// // Victory Point Cards: 4 cards
+// // Road Building Cards: 2 cards
+// // Year of Plenty Cards: 2 cards
+// // Monopoly Cards: 2 cards
 // void Board::InitializationDevCards() {
 //     devCards.push_back(std::make_unique<knight>());
 //     devCards.push_back(std::make_unique<knight>());

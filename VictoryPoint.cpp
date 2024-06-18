@@ -3,7 +3,7 @@
 
 void VictoryPoint::use_card(Board &board, Player &player)
 {
-    cout << "VictoryPoint" << endl;
+    player.addPoints(1);
 }
 
 string VictoryPoint::type() const

@@ -26,7 +26,7 @@ CXX = clang++
 
 all: main
 
-main: main.o Catan.o Tile.o Player.o Board.o Vertex.o Edge.o 
+main: main.o Catan.o Tile.o Player.o Board.o Vertex.o Edge.o Knight.o RoadBuilding.o Monopoly.o YearOfPlenty.o VictoryPoint.o
 	$(CXX) -o $@ $^
 
 main.o: main.cpp Catan.hpp
@@ -49,6 +49,25 @@ Vertex.o: Vertex.cpp Vertex.hpp
 
 Edge.o: Edge.cpp Edge.hpp
 	$(CXX) -c -o $@ $<
+
+# DevCard.o: DevCard.cpp DevCard.hpp
+# 	$(CXX) -c -o $@ $<
+
+Knight.o: Knight.cpp Knight.hpp
+	$(CXX) -c -o $@ $<
+
+RoadBuilding.o: RoadBuilding.cpp RoadBuilding.hpp
+	$(CXX) -c -o $@ $<
+
+Monopoly.o: Monopoly.cpp Monopoly.hpp
+	$(CXX) -c -o $@ $<
+
+YearOfPlenty.o: YearOfPlenty.cpp YearOfPlenty.hpp
+	$(CXX) -c -o $@ $<
+
+VictoryPoint.o: VictoryPoint.cpp VictoryPoint.hpp
+	$(CXX) -c -o $@ $<
+
 
 clean:
 	 rm -f main *.o

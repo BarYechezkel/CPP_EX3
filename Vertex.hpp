@@ -23,11 +23,11 @@ private:
 public:
     // Constructors
     Vertex(int id_num) : id_num(id_num), hasSettlement(false), hasCity(false), player_color(0) {
-        resources[1] = 0; // wood
-        resources[2] = 0; // brick
-        resources[3] = 0; // sheep
-        resources[4] = 0; // wheat
-        resources[5] = 0; // iron
+        resources[0] = 0; // wood
+        resources[1] = 0; // brick
+        resources[2] = 0; // sheep
+        resources[3] = 0; // wheat
+        resources[4] = 0; // iron
     }
     Vertex(){}; // Default constructor
 

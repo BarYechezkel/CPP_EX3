@@ -6,12 +6,12 @@
 #include "Vertex.hpp"
 #include <vector>
 
-#define WOOD 1
-#define BRICK 2
-#define SHEEP 3
-#define WHEAT 4
-#define IRON 5
-#define DESERT 0
+#define WOOD 0
+#define BRICK 1
+#define SHEEP 2
+#define WHEAT 3
+#define IRON 4
+#define DESERT 5
 
 class Vertex;
 class Edge;

@@ -1,7 +1,10 @@
 #include "Player.hpp"
 #include <iostream> // Add this include for cout and endl
 #include <cstdlib>  // Add this include for rand()
+#include <limits>
 using namespace std;
+
+int inputInt();
 
 // Accessors
 string Player::getName() const
@@ -19,14 +22,201 @@ int Player::getColor() const
     return color;
 }
 
+string Player::getColorName() const
+{
+    if (color == 1)
+    {
+        return "RED";
+    }
+    if (color == 2)
+    {
+        return "BLUE";
+    }
+    if (color == 3)
+    {
+        return "GREEN";
+    }
+    return "";
+}
+
 int Player::getDiceRoll()
 {
     return playerDice;
 }
 
+vector<unique_ptr<DevCard>> &Player::getDevCards()
+{
+    return vecDevCards;
+}
+
+int Player::playDevCard(int cardType, Board &board)
+{
+    // after we check in catan.cpp that the player has the card, we will call this function
+    //  1. VictoryPoint
+    //  2. Knight
+    //  3. RoadBuilding
+    //  4. YearOfPlenty
+    //  5. Monopoly
+    if (cardType < 1 || cardType > 5)
+    {
+        cout << "Invalid card type" << endl;
+        return 0;
+    }
+    if (cardType == 1)
+    {
+        // take a card from vecDevCards
+        //  use the card buy playing it
+
+        // remove the card from vecDevCards
+        // add the card to the player's points
+        // update the player's points
+        // return 1
+        for (int i = 0; i < vecDevCards.size(); i++)
+        {
+            if (vecDevCards[i]->type() == "VictoryPoint")
+            {
+                // use the card
+                vecDevCards[i]->use_card(board, *this);
+                vecDevCards.erase(vecDevCards.begin() + i);
+                updateDevCards();
+                return 1;
+            }
+        }
+    }
+    if (cardType == 2)
+    {
+        if (devCards["Knight"] == 3)
+        {
+            // got 2 points
+            addPoints(2);
+            devCards["Knight"] -= 3;
+            for (int i = 0; i < vecDevCards.size(); i++)
+            {
+                if (vecDevCards[i]->type() == "Knight")
+                {
+                    vecDevCards.erase(vecDevCards.begin() + i);
+                    updateDevCards();
+                }
+            }
+            return 2;
+        }
+    }
+    if (cardType == 3)
+    {
+        // you can bulid 2 roads
+        for (int i = 0; i < vecDevCards.size(); i++)
+        {
+            if (vecDevCards[i]->type() == "RoadBuilding")
+            {
+                vecDevCards[i]->use_card(board, *this);
+                vecDevCards.erase(vecDevCards.begin() + i);
+                updateDevCards();
+                break;
+            }
+        }
+        return 3;
+    }
+    if (cardType == 4)
+    {
+        // you can take 2 resources
+        for (int i = 0; i < vecDevCards.size(); i++)
+        {
+            if (vecDevCards[i]->type() == "YearOfPlenty")
+            {
+                vecDevCards[i]->use_card(board, *this);
+                vecDevCards.erase(vecDevCards.begin() + i);
+                updateDevCards();
+                return 4;
+            }
+        }
+    }
+    if (cardType == 5)
+    {
+        // you can take all the resources of a type
+        for (int i = 0; i < vecDevCards.size(); i++)
+        {
+            if (vecDevCards[i]->type() == "Monopoly")
+            {
+                vecDevCards[i]->use_card(board, *this);
+                vecDevCards.erase(vecDevCards.begin() + i);
+                updateDevCards();
+                return 5;
+            }
+        }
+    }
+    return 0;
+}
+
 map<int, int> &Player::getResources()
 {
     return resources;
+}
+
+void Player::addCard(unique_ptr<DevCard> card)
+{
+    vecDevCards.push_back(move(card));
+    updateDevCards();
+}
+
+void Player::updateDevCards()
+{
+    // 0 victory
+    // 1 knight
+    // 2 road
+    // 3 year
+    // 4 monopoly
+    // add card into the map of cards
+    //  init the map
+    devCards["VictoryPoint"] = 0;
+    devCards["Knight"] = 0;
+    devCards["RoadBuilding"] = 0;
+    devCards["YearOfPlenty"] = 0;
+    devCards["Monopoly"] = 0;
+    for (int i = 0; i < vecDevCards.size(); i++)
+    {
+        if (vecDevCards[i]->type() == "VictoryPoint")
+        {
+            devCards["VictoryPoint"]++;
+        }
+        else if (vecDevCards[i]->type() == "Knight")
+        {
+            devCards["Knight"]++;
+        }
+        else if (vecDevCards[i]->type() == "RoadBuilding")
+        {
+            devCards["RoadBuilding"]++;
+        }
+        else if (vecDevCards[i]->type() == "YearOfPlenty")
+        {
+            devCards["YearOfPlenty"]++;
+        }
+        else if (vecDevCards[i]->type() == "Monopoly")
+        {
+            devCards["Monopoly"]++;
+        }
+    }
+}
+
+void Player::printCards()
+{
+    // print the cards you have
+    if (vecDevCards.size() == 0)
+    {
+        cout << "You do not have any development cards" << endl;
+    }
+    else
+    {
+            cout << "1. victory point: " << devCards["VictoryPoint"] << endl;
+            cout << "2. Knight: " << devCards["Knight"] << endl;
+            cout << "3. Road Building: " << devCards["RoadBuilding"] << endl;
+            cout << "4. Year Of Plenty: " << devCards["YearOfPlenty"] << endl;
+            cout << "5. Monopoly: " << devCards["Monopoly"] << endl;
+    }
+}
+
+void Player::addPoints(int points)
+{
+    this->points += points;
 }
 
 // Mutators
@@ -43,6 +233,11 @@ void Player::setColor(int color)
 void Player::addResource(int resource, int amount)
 {
     resources[resource] += amount;
+}
+
+void Player::deleteResource(int resource, int amount)
+{
+    resources[resource] -= amount;
 }
 
 // Game actions
@@ -76,10 +271,10 @@ void Player::printResources()
     // Print the defined resources
     // cout << "Player " << name << " has the following resources: " << endl;
     // Emoji
-    cout << "Wood  🌲 : " << resources[1] << endl;  // Tree emoji for Wood
-    cout << "Brick 🧱 : " << resources[2] << endl;  // Brick emoji
-    cout << "Sheep 🐑 : " << resources[3] << endl;  // Sheep emoji
-    cout << "Wheat 🌾 : " << resources[4] << endl;  // Wheat emoji
+    cout << "Wood  🌲 : " << resources[0] << endl;  // Tree emoji for Wood
+    cout << "Brick 🧱 : " << resources[1] << endl;  // Brick emoji
+    cout << "Sheep 🐑 : " << resources[2] << endl;  // Sheep emoji
+    cout << "Wheat 🌾 : " << resources[3] << endl;  // Wheat emoji
     cout << "Iron  🪨  : " << resources[4] << endl; // Wheat emoji
 }
 
@@ -101,10 +296,7 @@ int Player::placeSettlementFirst(Board &board, int vertexNum)
     board.getVertex(vertexNum)->buildSettlement(color);
     for (int i = 0; i < board.getVertex(vertexNum)->getResources().size(); i++)
     {
-        if (board.getVertex(vertexNum)->getResources()[i] > 0)
-        {
-            resources[i]++;
-        }
+        resources[i] += board.getVertex(vertexNum)->getResources()[i];
     }
     points++;
     return 1;
@@ -272,7 +464,7 @@ int Player::placeCity(Board &board, int vertexNum)
     return 1;
 }
 
-pair <map<int,int>,map <int,int>> Player::trade()
+pair<map<int, int>, map<int, int>> Player::trade()
 {
     cout << "You have the following resources: " << endl;
     printResources();
@@ -282,86 +474,88 @@ pair <map<int,int>,map <int,int>> Player::trade()
     int sheep_give;
     int wheat_give;
     int iron_give;
-    cout << "1. Wood 🌲 between 0 - " << resources[1] << endl;
+    cout << "1. Wood 🌲 between 0 - " << resources[0] << ": ";
     while (1)
     {
-        cin >> wood_give;
-        if (wood_give >= 0 && wood_give <= resources[1])
+        wood_give = inputInt();
+        if (wood_give >= 0 && wood_give <= resources[0])
         {
             break;
         }
         cout << "Invalid input, please try again" << endl;
     }
-    cout << "2. Brick 🧱 between 0 - " << resources[2] << endl;
+    cout << "2. Brick 🧱 between 0 - " << resources[1] << ": ";
     while (1)
     {
-        cin >> brick_give;
-        if (brick_give >= 0 && brick_give <= resources[2])
+        brick_give = inputInt();
+        if (brick_give >= 0 && brick_give <= resources[1])
         {
             break;
         }
         cout << "Invalid input, please try again" << endl;
     }
-    cout << "3. Sheep 🐑 between 0 - " << resources[3] << endl;
+    cout << "3. Sheep 🐑 between 0 - " << resources[2] << ": ";
     while (1)
     {
-        cin >> sheep_give;
-        if (sheep_give >= 0 && sheep_give <= resources[3])
+        sheep_give = inputInt();
+        if (sheep_give >= 0 && sheep_give <= resources[2])
         {
             break;
         }
         cout << "Invalid input, please try again" << endl;
     }
-    cout << "4. Wheat 🌾 between 0 - " << resources[4] << endl;
+    cout << "4. Wheat 🌾 between 0 - " << resources[3] << ": ";
     while (1)
     {
-        cin >> wheat_give;
-        if (wheat_give >= 0 && wheat_give <= resources[4])
+        wheat_give = inputInt();
+        if (wheat_give >= 0 && wheat_give <= resources[3])
         {
             break;
         }
         cout << "Invalid input, please try again" << endl;
     }
-    cout << "5. Iron 🪨 between 0 - " << resources[5] << endl;
+    cout << "5. Iron 🪨  between 0 - " << resources[4] << ": ";
     while (1)
     {
-        cin >> iron_give;
-        if (iron_give >= 0 && iron_give <= resources[5])
+        iron_give = inputInt();
+        if (iron_give >= 0 && iron_give <= resources[4])
         {
             break;
         }
-        cout << "Invalid input, please try again" << endl;
+        cout << "Invalid input, please try again" << ": ";
     }
-    map<int,int> want_give;
-    want_give[1] = wood_give;
-    want_give[2] = brick_give;
-    want_give[3] = sheep_give;
-    want_give[4] = wheat_give;
-    want_give[5] = iron_give;
+    cout << endl;
+    map<int, int> want_give;
+    want_give[0] = wood_give;
+    want_give[1] = brick_give;
+    want_give[2] = sheep_give;
+    want_give[3] = wheat_give;
+    want_give[4] = iron_give;
 
-    map<int,int> want_take;
+    map<int, int> want_take;
     cout << "what would you like to receive?" << endl;
     int wood_take;
     int brick_take;
     int sheep_take;
     int wheat_take;
     int iron_take;
-    cout << "1. Wood 🌲" << endl;
-    cin >> wood_take;
-    cout << "2. Brick 🧱" << endl;
-    cin >> brick_take;
-    cout << "3. Sheep 🐑" << endl;
-    cin >> sheep_take;
-    cout << "4. Wheat 🌾" << endl;
-    cin >> wheat_take;
-    cout << "5. Iron 🪨" << endl;
-    cin >> iron_take;
-    want_take[1] = wood_take;
-    want_take[2] = brick_take;
-    want_take[3] = sheep_take;
-    want_take[4] = wheat_take;
-    want_take[5] = iron_take;
-    return {want_give , want_take};    
+    cout << "1. Wood 🌲: ";
+    wood_take = inputInt(); // cout << endl;
+    cout << "2. Brick 🧱: ";
+    brick_take = inputInt(); // cout << endl;
+    cout << "3. Sheep 🐑: ";
+    sheep_take = inputInt(); // cout << endl;
+    cout << "4. Wheat 🌾: ";
+    wheat_take = inputInt(); // cout << endl;
+    cout << "5. Iron 🪨 : ";
+    iron_take = inputInt(); // cout << endl;
+    cout << endl;
+    want_take[0] = wood_take;
+    want_take[1] = brick_take;
+    want_take[2] = sheep_take;
+    want_take[3] = wheat_take;
+    want_take[4] = iron_take;
+    return {want_give, want_take};
 }
 
 int Player::discardHalf()
@@ -369,7 +563,7 @@ int Player::discardHalf()
     cout << "you have the following resources: " << endl;
     printResources();
     cout << "Please discard half of your resources" << endl;
-    int total_to_discard = resources[1] + resources[2] + resources[3] + resources[4] + resources[5];
+    int total_to_discard = resources[0] + resources[1] + resources[2] + resources[3] + resources[4];
     int to_discard = total_to_discard / 2;
     cout << "You need to discard " << to_discard << " resources" << endl;
     // if the player has less than 7 resources, they do not need to discard
@@ -390,34 +584,34 @@ int Player::discardUtility(int to_discard)
     int wheat = 0;
     int iron = 0;
 
+    if (resources[0] > 0)
+    {
+        cout << "you have " << resources[0] << " wood 🌲 " << "how many would you like to discard?" << endl;
+        wood = inputInt();
+        discarded += wood;
+    }
     if (resources[1] > 0)
     {
-        cout << "you have" << resources[1] << " wood 🌲 " << "how many would you like to discard?" << endl;
-        cin >> wood;
-        discarded += wood;
+        cout << "you have " << resources[1] << " brick 🧱 " << "how many would you like to discard?" << endl;
+        brick = inputInt();
+        discarded += brick;
     }
     if (resources[2] > 0)
     {
-        cout << "you have " << resources[2] << " brick 🧱 " << "how many would you like to discard?" << endl;
-        cin >> brick;
-        discarded += brick;
+        cout << "you have " << resources[2] << " sheep 🐑 " << "how many would you like to discard?" << endl;
+        sheep = inputInt();
+        discarded += sheep;
     }
     if (resources[3] > 0)
     {
-        cout << "you have " << resources[3] << " sheep 🐑 " << "how many would you like to discard?" << endl;
-        cin >> sheep;
-        discarded += sheep;
+        cout << "you have " << resources[3] << " wheat 🌾 " << "how many would you like to discard?" << endl;
+        wheat = inputInt();
+        discarded += wheat;
     }
     if (resources[4] > 0)
     {
-        cout << "you have " << resources[4] << " wheat 🌾 " << "how many would you like to discard?" << endl;
-        cin >> wheat;
-        discarded += wheat;
-    }
-    if (resources[5] > 0)
-    {
-        cout << "you have " << resources[5] << " iron 🪨 " << "how many would you like to discard?" << endl;
-        cin >> iron;
+        cout << "you have " << resources[4] << " iron 🪨 " << "how many would you like to discard?" << endl;
+        iron = inputInt();
         discarded += iron;
     }
     if (discarded != to_discard)
@@ -428,11 +622,11 @@ int Player::discardUtility(int to_discard)
     else
     {
         cout << "You have successfully discarded half of your resources" << endl;
-        resources[1] -= wood;
-        resources[2] -= brick;
-        resources[3] -= sheep;
-        resources[4] -= wheat;
-        resources[5] -= iron;
+        resources[0] -= wood;
+        resources[1] -= brick;
+        resources[2] -= sheep;
+        resources[3] -= wheat;
+        resources[4] -= iron;
         return 1;
     }
 }
@@ -494,4 +688,24 @@ int Player::isValidPlaceFirst(Board &board, int vertexNum)
         return 0;
     }
     return 1;
+}
+
+int inputInt()
+{
+    int input;
+    while (1)
+    {
+        cin >> input;
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input, please try again" << endl;
+        }
+        else
+        {
+            break;
+        }
+    }
+    return input;
 }

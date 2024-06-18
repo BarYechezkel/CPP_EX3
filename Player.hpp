@@ -7,6 +7,8 @@
 #include "Board.hpp"
 #include "DevCard.hpp"
 
+class DevCard;
+
 class Player
 {
 
@@ -16,29 +18,44 @@ private:
     int color;
     int playerDice;
     map<int, int> resources; // key is the resource number, value is the amount of that resource
-   // vector <DevCard*> devCards; // key is the dev card number, value is the amount of that dev card
+    vector<unique_ptr<DevCard>> vecDevCards;
+    map <string, int> devCards;
 public:
     // Constructor
     Player(string name) : name(name), points(0), color()
     {
-        resources[1] = 0; // wood
-        resources[2] = 0; // brick
-        resources[3] = 0; // sheep
-        resources[4] = 0; // wheat
-        resources[5] = 0; // iron
+        resources[0] = 10; // wood
+        resources[1] = 10; // brick
+        resources[2] = 10; // sheep
+        resources[3] = 10; // wheat
+        resources[4] = 10; // iron
+
+        devCards["Knight"] = 0;
+        devCards["VictoryPoint"] = 0;
+        devCards["RoadBuilding"] = 0;
+        devCards["YearOfPlenty"] = 0;
+        devCards["Monopoly"] = 0;
     }
 
      // Accessors
     std::string getName() const;
     int getPoints();
     int getColor() const;
+    string getColorName() const;
     int getDiceRoll();
-    std::map<int, int> &getResources();
+    vector<unique_ptr<DevCard>> &getDevCards();
+    int playDevCard(int cardNum, Board &board);
+    map<int, int> &getResources();
+    void addCard(unique_ptr<DevCard> card);
+    void updateDevCards();
+    void printCards();
+    void addPoints(int points);
 
     // Mutators
     void setName(std::string name);
     void setColor(int color);
     void addResource(int resource, int amount);
+    void deleteResource(int resource, int amount);
 
     // Game actions
     int rollDice();
