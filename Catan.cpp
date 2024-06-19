@@ -343,7 +343,7 @@ void Catan::turn(Board &board, Player &player, Player &player2, Player &player3)
                 }
                 if (choice == 5)
                 {
-                    return; // Exit the function to return to the previous menu
+                    continue; // Exit the function to return to the previous menu
                 }
                 if (choice == 1)
                 {
@@ -351,6 +351,7 @@ void Catan::turn(Board &board, Player &player, Player &player2, Player &player3)
                     if (player.getResources()[WOOD] < 1 || player.getResources()[BRICK] < 1 || player.getResources()[SHEEP] < 1 || player.getResources()[WHEAT] < 1)
                     {
                         cout << "You do not have enough resources to build a settlement" << endl;
+                        continue;
                     }
                     else
                     {
@@ -374,6 +375,7 @@ void Catan::turn(Board &board, Player &player, Player &player2, Player &player3)
                     if (player.getResources()[WOOD] < 1 || player.getResources()[BRICK] < 1)
                     {
                         cout << "You do not have enough resources to build a road" << endl;
+                        continue;
                     }
                     else
                     {
@@ -395,6 +397,8 @@ void Catan::turn(Board &board, Player &player, Player &player2, Player &player3)
                     if (player.getResources()[WHEAT] < 2 || player.getResources()[IRON] < 3)
                     {
                         cout << "You do not have enough resources to build a city" << endl;
+                        continue;
+                    
                     }
                     else
                     {
@@ -404,8 +408,7 @@ void Catan::turn(Board &board, Player &player, Player &player2, Player &player3)
                         while (player.placeCity(board, vertexNum) == 0)
                         {
                             cout << "Invalid vertex, please try again" << endl;
-                            return;
-                            // vertexNum = inputInt();
+                            vertexNum = inputInt();
                         }
                         player.deleteResource(WHEAT, 2);
                         player.deleteResource(IRON, 3);
@@ -417,6 +420,7 @@ void Catan::turn(Board &board, Player &player, Player &player2, Player &player3)
                     if (player.getResources()[SHEEP] < 1 || player.getResources()[WHEAT] < 1 || player.getResources()[IRON] < 1)
                     {
                         cout << "You do not have enough resources to buy a development card" << endl;
+                        continue;
                     }
                     else
                     {

@@ -24,11 +24,11 @@ public:
     // Constructor
     Player(string name) : name(name), points(0), color()
     {
-        resources[0] = 10; // wood
-        resources[1] = 10; // brick
-        resources[2] = 10; // sheep
-        resources[3] = 10; // wheat
-        resources[4] = 10; // iron
+        resources[0] = 0; // wood
+        resources[1] = 0; // brick
+        resources[2] = 0; // sheep
+        resources[3] = 0; // wheat
+        resources[4] = 00; // iron
 
         devCards["Knight"] = 0;
         devCards["VictoryPoint"] = 0;
