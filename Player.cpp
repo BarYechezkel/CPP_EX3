@@ -49,99 +49,98 @@ vector<unique_ptr<DevCard>> &Player::getDevCards()
     return vecDevCards;
 }
 
-int Player::playDevCard(int cardType, Board &board)
+int Player::playDevCard(Board &board, vector<Player *> &players)
 {
-    // after we check in catan.cpp that the player has the card, we will call this function
-    //  1. VictoryPoint
-    //  2. Knight
-    //  3. RoadBuilding
-    //  4. YearOfPlenty
-    //  5. Monopoly
-    if (cardType < 1 || cardType > 5)
+    while (1)
     {
-        cout << "Invalid card type" << endl;
-        return 0;
-    }
-    if (cardType == 1)
-    {
-        // take a card from vecDevCards
-        //  use the card buy playing it
-
-        // remove the card from vecDevCards
-        // add the card to the player's points
-        // update the player's points
-        // return 1
-        for (int i = 0; i < vecDevCards.size(); i++)
+        // after we check in catan.cpp that the player has the card, we will call this function
+        //  1. VictoryPoint
+        //  2. Knight
+        //  3. RoadBuilding
+        //  4. YearOfPlenty
+        //  5. Monopoly
+        if (vecDevCards.size() == 0)
         {
-            if (vecDevCards[i]->type() == "VictoryPoint")
-            {
-                // use the card
-                vecDevCards[i]->use_card(board, *this);
-                vecDevCards.erase(vecDevCards.begin() + i);
-                updateDevCards();
-                return 1;
-            }
+            cout << "You do not have any development cards" << endl;
+            return 0;
         }
-    }
-    if (cardType == 2)
-    {
-        if (devCards["Knight"] == 3)
+        cout << "Which dev card would you like to play?" << endl;
+        // cout << "1. Knight" << endl;
+        // cout << "2. Road Building" << endl;
+        // cout << "3. Year of Plenty" << endl;
+        // cout << "4. Monopoly" << endl;
+        // cout << "5. Victory Point" << endl;
+        printCards();
+        cout << "6. Return" << endl; // Added option to return
+        int choice;
+        while (1)
         {
-            // got 2 points
-            addPoints(2);
-            devCards["Knight"] -= 3;
-            for (int i = 0; i < vecDevCards.size(); i++)
+            choice = inputInt();
+            if (choice >= 1 && choice <= 6)
             {
-                if (vecDevCards[i]->type() == "Knight")
-                {
-                    vecDevCards.erase(vecDevCards.begin() + i);
-                    updateDevCards();
-                }
-            }
-            return 2;
-        }
-    }
-    if (cardType == 3)
-    {
-        // you can bulid 2 roads
-        for (int i = 0; i < vecDevCards.size(); i++)
-        {
-            if (vecDevCards[i]->type() == "RoadBuilding")
-            {
-                vecDevCards[i]->use_card(board, *this);
-                vecDevCards.erase(vecDevCards.begin() + i);
-                updateDevCards();
                 break;
             }
+            cout << "Invalid choice, please try again" << endl;
         }
-        return 3;
-    }
-    if (cardType == 4)
-    {
-        // you can take 2 resources
-        for (int i = 0; i < vecDevCards.size(); i++)
+
+        if (choice == 6)
         {
-            if (vecDevCards[i]->type() == "YearOfPlenty")
+            return 6;
+        }
+        if (choice == 1)
+        {
+            if (devCards["VictoryPoint"] == 0)
             {
-                vecDevCards[i]->use_card(board, *this);
-                vecDevCards.erase(vecDevCards.begin() + i);
-                updateDevCards();
-                return 4;
+                cout << "You do not have any victory point cards" << endl;
+                continue;
+            }
+            // if the player has a victory point card
+            // take a card from vecDevCards
+            //  use the card buy playing it
+            // remove the card from vecDevCards
+            // add the card to the player's points
+            // update the player's points
+            // return 1
+            useCard("VictoryPoint", board, players);
+            removeCard("VictoryPoint", 1);
+            return 1;
+        }
+        if (choice == 2)
+        {
+            if (devCards["Knight"] < 3)
+            {
+                cout << "You need 3 knight cards to get 2 points" << endl;
+                continue;
+            }
+            if (devCards["Knight"] >= 3)
+            {
+                cout << "You have 3 knight cards, you got 2 points" << endl;
+                // only update the points if the player has 3 knight cards
+                addPoints(2);
+                removeCard("Knight", 3);
+                return 2;
             }
         }
-    }
-    if (cardType == 5)
-    {
-        // you can take all the resources of a type
-        for (int i = 0; i < vecDevCards.size(); i++)
+        if (choice == 3)
         {
-            if (vecDevCards[i]->type() == "Monopoly")
-            {
-                vecDevCards[i]->use_card(board, *this);
-                vecDevCards.erase(vecDevCards.begin() + i);
-                updateDevCards();
-                return 5;
-            }
+            // you can bulid 2 roads
+            useCard("RoadBuilding", board, players);
+            removeCard("RoadBuilding", 1);
+            return 3;
+        }
+        if (choice == 4)
+        {
+            // you can take 2 resources from the bank
+            useCard("YearOfPlenty", board, players);
+            removeCard("YearOfPlenty", 1);
+            return 4;
+        }
+        if (choice == 5)
+        {
+            // you can take all the resources of a type
+            useCard("Monopoly", board, players);
+            removeCard("Monopoly", 1);
+            return 5;
         }
     }
     return 0;
@@ -154,45 +153,65 @@ map<int, int> &Player::getResources()
 
 void Player::addCard(unique_ptr<DevCard> card)
 {
+    string cardType = card->type();
     vecDevCards.push_back(move(card));
-    updateDevCards();
+    if (cardType == "VictoryPoint")
+    {
+        devCards["VictoryPoint"]++;
+    }
+    else if (cardType == "Knight")
+    {
+        devCards["Knight"]++;
+    }
+    else if (cardType == "RoadBuilding")
+    {
+        devCards["RoadBuilding"]++;
+    }
+    else if (cardType == "YearOfPlenty")
+    {
+        devCards["YearOfPlenty"]++;
+    }
+    else if (cardType == "Monopoly")
+    {
+        devCards["Monopoly"]++;
+    }
 }
 
-void Player::updateDevCards()
+void Player::removeCard(string cardType, int cardNum)
 {
-    // 0 victory
-    // 1 knight
-    // 2 road
-    // 3 year
-    // 4 monopoly
-    // add card into the map of cards
-    //  init the map
-    devCards["VictoryPoint"] = 0;
-    devCards["Knight"] = 0;
-    devCards["RoadBuilding"] = 0;
-    devCards["YearOfPlenty"] = 0;
-    devCards["Monopoly"] = 0;
+    // remove the card from the player's map of cards
+    //   remove the card from the player's vecDevCards
+    //   update the player's map of cards
+    //   return 1
+    int count = 0;
     for (int i = 0; i < vecDevCards.size(); i++)
     {
-        if (vecDevCards[i]->type() == "VictoryPoint")
+        if (vecDevCards[i]->type() == cardType)
         {
-            devCards["VictoryPoint"]++;
+            vecDevCards.erase(vecDevCards.begin() + i);
+            count++;
         }
-        else if (vecDevCards[i]->type() == "Knight")
+        if (count == cardNum)
         {
-            devCards["Knight"]++;
+            break;
         }
-        else if (vecDevCards[i]->type() == "RoadBuilding")
+    }
+    devCards[cardType] -= cardNum;
+}
+
+void Player::useCard(string cardType, Board &board, vector<Player *> &players)
+{
+    // use the card
+    //  remove the card from the player's map of cards
+    //  remove the card from the player's vecDevCards
+    //  update the player's map of cards
+    //  return 1
+    for (int i = 0; i < vecDevCards.size(); i++)
+    {
+        if (vecDevCards[i]->type() == cardType)
         {
-            devCards["RoadBuilding"]++;
-        }
-        else if (vecDevCards[i]->type() == "YearOfPlenty")
-        {
-            devCards["YearOfPlenty"]++;
-        }
-        else if (vecDevCards[i]->type() == "Monopoly")
-        {
-            devCards["Monopoly"]++;
+            vecDevCards[i]->use_card(board, *this, players);
+            break;
         }
     }
 }
@@ -206,11 +225,11 @@ void Player::printCards()
     }
     else
     {
-            cout << "1. victory point: " << devCards["VictoryPoint"] << endl;
-            cout << "2. Knight: " << devCards["Knight"] << endl;
-            cout << "3. Road Building: " << devCards["RoadBuilding"] << endl;
-            cout << "4. Year Of Plenty: " << devCards["YearOfPlenty"] << endl;
-            cout << "5. Monopoly: " << devCards["Monopoly"] << endl;
+        cout << "1. victory point: " << devCards["VictoryPoint"] << endl;
+        cout << "2. Knight: " << devCards["Knight"] << endl;
+        cout << "3. Road Building: " << devCards["RoadBuilding"] << endl;
+        cout << "4. Year Of Plenty: " << devCards["YearOfPlenty"] << endl;
+        cout << "5. Monopoly: " << devCards["Monopoly"] << endl;
     }
 }
 
@@ -261,10 +280,6 @@ void Player::endTurn()
     // Implement end turn logic
 }
 
-void Player::printPoints()
-{
-    // Implement printing points logic
-}
 
 void Player::printResources()
 {
@@ -302,13 +317,45 @@ int Player::placeSettlementFirst(Board &board, int vertexNum)
     return 1;
 }
 
+int Player::placeSettlementUtil(Board &board)
+{
+    // cout << "Cost of building a settlement is: 1 wood 🌲, 1 brick 🧱, 1 sheep 🐑, 1 wheat 🌾" << endl;
+    // cout << "1. Return" << endl;
+    if (getResources()[WOOD] < 1 || getResources()[BRICK] < 1 || getResources()[SHEEP] < 1 || getResources()[WHEAT] < 1)
+    {
+        cout << "You do not have enough resources to build a settlement" << endl;
+        return 0;
+    }
+
+    cout << "Enter the vertex number to place your settlement: ";
+    int vertexNum;
+    vertexNum = inputInt();
+    while (placeSettlement(board, vertexNum) == 0)
+    {
+        cout << "Invalid vertex, please try again. or enter -1 to exit" << endl;
+        vertexNum = inputInt();
+
+        if (vertexNum == -1)
+        {
+            return 0;
+        }
+    }
+    deleteResource(WOOD, 1);
+    deleteResource(BRICK, 1);
+    deleteResource(SHEEP, 1);
+    deleteResource(WHEAT, 1);
+    return 1;
+}
+
 int Player::placeSettlement(Board &board, int vertexNum)
 {
+
     if (vertexNum < 0 || vertexNum > 53)
     {
         cout << "Invalid vertex number" << endl;
         return 0;
     }
+
     Vertex *vertex = board.getVertex(vertexNum);
     if (vertex->getHasSettlement() || vertex->getHasCity())
     {
@@ -360,6 +407,33 @@ int Player::placeSettlement(Board &board, int vertexNum)
     // If a valid location is found, place the settlement and increment points, then return 1 indicating success
     board.getVertex(vertexNum)->buildSettlement(color);
     points++;
+    return 1;
+}
+
+int Player::placeRoadUtil(Board &board)
+{
+    // cout << "Cost of building a road is: 1 wood 🌲, 1 brick 🧱" << endl;
+    if (getResources()[WOOD] < 1 || getResources()[BRICK] < 1)
+    {
+        cout << "You do not have enough resources to build a road" << endl;
+        return 0;
+    }
+
+    cout << "Enter the edge number to place your road: ";
+    int edgeNum;
+    edgeNum = inputInt();
+    while (placeRoad(board, edgeNum) == 0)
+    {
+        cout << "Invalid edge, please try again. or enter -1 to exit" << endl;
+        edgeNum = inputInt();
+
+        if (edgeNum == -1)
+        {
+            return 0;
+        }
+    }
+    deleteResource(WOOD, 1);
+    deleteResource(BRICK, 1);
     return 1;
 }
 
@@ -440,6 +514,32 @@ int Player::placeRoad(Board &board, int edgeNum)
     return 1;
 }
 
+int Player::placeCityUtil(Board &board)
+{
+    cout << "Cost of building a city is: 2 wheat 🌾, 3 iron 🪨" << endl;
+    if (getResources()[WHEAT] < 2 || getResources()[IRON] < 3)
+    {
+        cout << "You do not have enough resources to build a city" << endl;
+        return 0;
+    }
+
+    cout << "Enter the vertex number to place your city: ";
+    int vertexNum;
+    vertexNum = inputInt();
+    while (placeCity(board, vertexNum) == 0)
+        {
+            cout << "Invalid vertex, please try again. or enter -1 to exit" << endl;
+            vertexNum = inputInt();
+
+            if (vertexNum == -1)
+            {
+                return 0;
+            }
+        }
+    deleteResource(WHEAT, 2);
+    deleteResource(IRON, 3);
+    return 1;
+}
 int Player::placeCity(Board &board, int vertexNum)
 {
     // place city on the board
@@ -466,8 +566,8 @@ int Player::placeCity(Board &board, int vertexNum)
 
 pair<map<int, int>, map<int, int>> Player::trade()
 {
-    cout << "You have the following resources: " << endl;
-    printResources();
+    // cout << "You have the following resources: " << endl;
+    // printResources();
     cout << "what would you like to give?" << endl;
     int wood_give;
     int brick_give;

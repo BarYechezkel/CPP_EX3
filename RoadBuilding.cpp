@@ -4,7 +4,7 @@
 
 int checksInputInt();
 
-void RoadBuilding::use_card(Board &board, Player &player)
+void RoadBuilding::use_card(Board &board, Player &player, vector<Player *> &players)
 {
     cout << "Enter the first edge number to place your road: ";
     int edgeNum;

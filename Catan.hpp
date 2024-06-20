@@ -58,6 +58,7 @@ public:
         players.push_back(&p2);
         players.push_back(&p3);
 
+        srand(time(0));
         // Create a random device and a generator
         std::random_device rd;
         std::mt19937 g(rd());
@@ -76,6 +77,8 @@ public:
     void StartGame();
     void firstTour(Board &board);
     void Dice7();
+    int resourceTrade(Player &player, Player &p2, Player &p3);
+    int buyDevCard(Player &player);
     void playerResources(Board &board);
     void ResourceDistribution(Board &board, int diceRoll);
     unique_ptr<DevCard> getCard();

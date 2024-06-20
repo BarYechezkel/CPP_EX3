@@ -2,7 +2,6 @@
 #include "Player.hpp"
 #include "Board.hpp"
 #include <iostream>
-// using namespace std;
 
 int main()
 {
@@ -11,6 +10,7 @@ int main()
     Player p3("Player3");
     Board board;
     Catan catan(p1, p2, p3, board);
+    // p2.addPoints(10);
     catan.StartGame();
     catan.progressGame();
     // p1.setColor(2);
@@ -48,6 +48,6 @@ int main()
     //     p2.placeCity(board, 3);
 
     //    board.printBoard();
-    catan.getBoard().printBoard();
+    // catan.getBoard().printBoard();
     return 0;
 }

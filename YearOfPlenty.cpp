@@ -5,7 +5,7 @@
 int checkInputInt();
 
 
-void YearOfPlenty::use_card(Board &board, Player &player)
+void YearOfPlenty::use_card(Board &board, Player &player, vector<Player*> &players)
 {
     cout << "Choose two resources to take from the bank" << endl;
      cout <<"1. Wood  🌲" << endl;
@@ -29,6 +29,8 @@ void YearOfPlenty::use_card(Board &board, Player &player)
     }
     player.addResource(resource1-1, 1);
     player.addResource(resource2-1, 1);
+    cout << "Player " << player.getName() << " now has: " << endl;
+    player.printResources();
 }
 
 string YearOfPlenty::type() const

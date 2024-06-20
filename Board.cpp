@@ -351,25 +351,3 @@ void Board::InitVerticesAdjacencyEdges()
 
 }
 
-
-// // Knight Cards (Soldier Cards):3 cards
-// // Victory Point Cards: 4 cards
-// // Road Building Cards: 2 cards
-// // Year of Plenty Cards: 2 cards
-// // Monopoly Cards: 2 cards
-// void Board::InitializationDevCards() {
-//     devCards.push_back(std::make_unique<knight>());
-//     devCards.push_back(std::make_unique<knight>());
-//     devCards.push_back(std::make_unique<knight>());
-//     devCards.push_back(std::make_unique<victory_point>());
-//     devCards.push_back(std::make_unique<victory_point>());
-//     devCards.push_back(std::make_unique<victory_point>());
-//     devCards.push_back(std::make_unique<victory_point>());
-//     devCards.push_back(std::make_unique<road_building>());
-//     devCards.push_back(std::make_unique<road_building>());
-//     devCards.push_back(std::make_unique<year_of_plenty>());
-//     devCards.push_back(std::make_unique<year_of_plenty>());
-//     devCards.push_back(std::make_unique<monopoly>());
-//     devCards.push_back(std::make_unique<monopoly>());
-// }
-

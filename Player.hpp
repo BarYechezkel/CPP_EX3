@@ -24,11 +24,11 @@ public:
     // Constructor
     Player(string name) : name(name), points(0), color()
     {
-        resources[0] = 0; // wood
-        resources[1] = 0; // brick
-        resources[2] = 0; // sheep
-        resources[3] = 0; // wheat
-        resources[4] = 00; // iron
+        resources[0] = 5; // wood
+        resources[1] = 5; // brick
+        resources[2] = 5; // sheep
+        resources[3] = 5; // wheat
+        resources[4] = 5; // iron
 
         devCards["Knight"] = 0;
         devCards["VictoryPoint"] = 0;
@@ -44,10 +44,12 @@ public:
     string getColorName() const;
     int getDiceRoll();
     vector<unique_ptr<DevCard>> &getDevCards();
-    int playDevCard(int cardNum, Board &board);
+    int playDevCard(Board &board, vector<Player*> &players);
     map<int, int> &getResources();
     void addCard(unique_ptr<DevCard> card);
-    void updateDevCards();
+    void removeCard(string cardType,int cardNum);
+    void useCard(string cardType, Board &board, vector<Player*> &players);
+    // void updateDevCards();
     void printCards();
     void addPoints(int points);
 
@@ -61,14 +63,16 @@ public:
     int rollDice();
     void trade(Player p2, std::string give, std::string take, int giveNum, int takeNum);
     void endTurn();
-    void printPoints();
     void printResources();
 
     // Placement actions
     int placeSettlementFirst(Board &board, int vertexNum);
+    int placeSettlementUtil(Board &board);
     int placeSettlement(Board &board, int vertexNum);
     int placeRoad(Board &board, int edgeNum);
+    int placeRoadUtil(Board &board);
     int placeCity(Board &board, int vertexNum);
+    int placeCityUtil(Board &board);
     pair <map <int,int>,map <int,int>> trade();
     int discardHalf();
     int discardUtility(int to_discard);

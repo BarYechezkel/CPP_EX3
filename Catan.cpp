@@ -25,7 +25,6 @@ void Catan::SetPlayerColor()
 }
 void Catan::StartGame()
 {
-
     // get 3 names from the user
     cout << "Welcome to Catan!" << endl;
     // initialize the board- set the resources and numbers for each tile
@@ -116,35 +115,35 @@ void Catan::firstTour(Board &board)
         cout << "Invalid edge, please try again" << endl;
         edgeNum = inputInt();
     }
-    // // GREEN player goes third
-    // cout << "Player 3, " << p3.getName() << ", place your first settlement: ";
-    // vertexNum = inputInt();
-    // while (p3.placeSettlementFirst(board, vertexNum) == 0)
-    // {
-    //     cout << "Invalid vertex, please try again" << endl;
-    //     vertexNum = inputInt();
-    // }
-    // cout << "Player 3, " << p3.getName() << ", place your first road: ";
-    // edgeNum = inputInt();
-    // while (p3.placeRoad(board, edgeNum) == 0)
-    // {
-    //     cout << "Invalid edge, please try again" << endl;
-    //     edgeNum = inputInt();
-    // }
-    // cout << "Player 3, " << p3.getName() << ", place your second settlement: ";
-    // vertexNum = inputInt();
-    // while (p3.placeSettlementFirst(board, vertexNum) == 0)
-    // {
-    //     cout << "Invalid vertex, please try again" << endl;
-    //     vertexNum = inputInt();
-    // }
-    // cout << "Player 3, " << p3.getName() << ", place your second road: ";
-    // edgeNum = inputInt();
-    // while (p3.placeRoad(board, edgeNum) == 0)
-    // {
-    //     cout << "Invalid edge, please try again" << endl;
-    //     edgeNum = inputInt();
-    // }
+    // GREEN player goes third
+    cout << "Player 3, " << p3.getName() << ", place your first settlement: ";
+    vertexNum = inputInt();
+    while (p3.placeSettlementFirst(board, vertexNum) == 0)
+    {
+        cout << "Invalid vertex, please try again" << endl;
+        vertexNum = inputInt();
+    }
+    cout << "Player 3, " << p3.getName() << ", place your first road: ";
+    edgeNum = inputInt();
+    while (p3.placeRoad(board, edgeNum) == 0)
+    {
+        cout << "Invalid edge, please try again" << endl;
+        edgeNum = inputInt();
+    }
+    cout << "Player 3, " << p3.getName() << ", place your second settlement: ";
+    vertexNum = inputInt();
+    while (p3.placeSettlementFirst(board, vertexNum) == 0)
+    {
+        cout << "Invalid vertex, please try again" << endl;
+        vertexNum = inputInt();
+    }
+    cout << "Player 3, " << p3.getName() << ", place your second road: ";
+    edgeNum = inputInt();
+    while (p3.placeRoad(board, edgeNum) == 0)
+    {
+        cout << "Invalid edge, please try again" << endl;
+        edgeNum = inputInt();
+    }
 }
 
 void Catan::Dice7()
@@ -190,8 +189,8 @@ void Catan::progressGame()
         cout << p2.getName() << ", it's your turn" << endl;
         turn(board, p2, p1, p3);
         // // player 3's turn
-        // cout << p3.getName() << ", it's your turn" << endl;
-        // turn(board, p3, p1, p2);
+        cout << p3.getName() << ", it's your turn" << endl;
+        turn(board, p3, p1, p2);
     }
     printWinner();
 }
@@ -202,12 +201,12 @@ void Catan::progressGame()
 // each player can buy a development card
 // each player can play a development card
 // each player can end their turn
-
 void Catan::turn(Board &board, Player &player, Player &player2, Player &player3)
 {
     while (1)
     {
         int choice;
+        cout << "You have: " << player.getPoints() << " points" << endl;
         cout << player.getName() << " ,you have the following resources:" << endl;
         player.printResources();
         cout << "Would you like to use a dev card or roll the dice?" << endl;
@@ -223,84 +222,30 @@ void Catan::turn(Board &board, Player &player, Player &player2, Player &player3)
             }
             cout << "Invalid choice, please try again" << endl;
         }
-
-        if (choice == 1)
+        switch (choice)
         {
-            if (player.getDevCards().size() == 0)
+
+        case 1:
+        {
+            int return_value = player.playDevCard(board, players);
+            if (return_value == 0)
             {
-                cout << "You do not have any development cards" << endl;
+                // cout << "You do not have any development cards" << endl;
                 continue;
             }
-
-            cout << "Which dev card would you like to play?" << endl;
-            player.printCards();
-            // cout << "1. Knight" << endl;
-            // cout << "2. Road Building" << endl;
-            // cout << "3. Year of Plenty" << endl;
-            // cout << "4. Monopoly" << endl;
-            // cout << "5. Victory Point" << endl;
-            cout << "6. Return" << endl; // Added option to return
-            while (1)
+            if (return_value > 0 && return_value < 6)
             {
-                choice = inputInt();
-                if (choice >= 1 && choice <= 6)
-                {
-                    break;
-                }
-                cout << "Invalid choice, please try again" << endl;
+                cout << "You played a development card" << endl;
+                return;
             }
             if (choice == 6)
             {
-                return; // Exit the function to return to the previous menu
+                continue; // Exit the function to return to the previous menu
             }
-            int return_value = player.playDevCard(choice, board);
-            if (return_value == 5)
-            {
-                // all the other players need to give the chosen resource to the player
-                cout << "Player " << player.getName() << " played Monopoly card" << endl;
-                cout << "Which resource would you like to take from the other players?" << endl;
-                cout << "1. Wood 🌲" << endl
-                     << "2. Brick 🧱" << endl
-                     << "3. Sheep 🐑" << endl
-                     << "4. Wheat 🌾" << endl
-                     << "5. Iron 🪨" << endl;
-                cout << "6. Return" << endl; // Added option to return
-                while (1)
-                {
-                    choice = inputInt();
-                    if (choice >= 1 && choice <= 6)
-                    {
-                        break;
-                    }
-                    cout << "Invalid choice, please try again" << endl;
-                }
-                if (choice == 6)
-                {
-                    return; // Exit the function to return to the previous menu
-                }
-                // all the other players need to give the chosen resource to the player
-                choice = choice - 1;
-                for (int i = 0; i < players.size(); i++)
-                {
-                    if (players.at(i) != &player)
-                    {
-                        if (players.at(i)->getResources()[choice] > 0)
-                        {
-                            int amount = players.at(i)->getResources()[choice];
-                            players.at(i)->deleteResource(choice, amount);
-                            player.addResource(choice, amount);
-                        }
-                        else
-                        {
-                            cout << "Player " << players.at(i)->getName() << " does not have any " << choice << " to give" << endl;
-                        }
-                    }
-                }
-            }
-            return;
+            break;
         }
 
-        if (choice == 2)
+        case 2:
         {
             player.rollDice();
             cout << "You rolled a " << player.getDiceRoll() << endl;
@@ -309,224 +254,82 @@ void Catan::turn(Board &board, Player &player, Player &player2, Player &player3)
                 Dice7();
             }
             ResourceDistribution(board, player.getDiceRoll());
-            cout << player.getName() << " ,you have the following resources:" << endl;
-            player.printResources();
-            cout << "Would you like to build, trade, or end your turn?" << endl;
-            cout << "1. Build" << endl;
-            cout << "2. Trade" << endl;
-            cout << "3. End turn" << endl;
             while (1)
             {
-                choice = inputInt();
-                if (choice == 1 || choice == 2 || choice == 3)
-                {
-                    break;
-                }
-                cout << "Invalid choice, please try again" << endl;
-            }
-            if (choice == 1)
-            {
-                cout << "What would you like to build?" << endl;
-                cout << "1. Settlement:       1 wood  🌲 , 1 brick 🧱 , 1 sheep 🐑 , 1 wheat 🌾" << endl;
-                cout << "2. Road:             1 wood  🌲 , 1 brick 🧱" << endl;
-                cout << "3. City:             2 wheat 🌾 , 3 iron  🪨" << endl;
-                cout << "4. Development card: 1 sheep 🐑 , 1 wheat 🌾 , 1 iron  🪨" << endl;
-                cout << "5. Return" << endl; // Added option to return
+                cout << "You have: " << player.getPoints() << " points" << endl;
+                cout << player.getName() << " ,you have the following resources:" << endl;
+                player.printResources();
+                cout << "Would you like to build, trade, or end your turn?" << endl;
+                cout << "1. Build" << endl;
+                cout << "2. Trade" << endl;
+                cout << "3. Buy dev card. cost: 1 sheep 🐑 , 1 wheat 🌾 , 1 iron  🪨" << endl;
+                cout << "4. End turn" << endl;
                 while (1)
                 {
                     choice = inputInt();
-                    if (choice >= 1 && choice <= 5)
+                    if (choice == 1 || choice == 2 || choice == 3 || choice == 4)
                     {
                         break;
                     }
                     cout << "Invalid choice, please try again" << endl;
                 }
-                if (choice == 5)
-                {
-                    continue; // Exit the function to return to the previous menu
-                }
                 if (choice == 1)
                 {
-                    cout << "Cost of building a settlement is: 1 wood 🌲, 1 brick 🧱, 1 sheep 🐑, 1 wheat 🌾" << endl;
-                    if (player.getResources()[WOOD] < 1 || player.getResources()[BRICK] < 1 || player.getResources()[SHEEP] < 1 || player.getResources()[WHEAT] < 1)
+                    cout << "What would you like to build?" << endl;
+                    cout << "1. Settlement:       1 wood  🌲 , 1 brick 🧱 , 1 sheep 🐑 , 1 wheat 🌾" << endl;
+                    cout << "2. Road:             1 wood  🌲 , 1 brick 🧱" << endl;
+                    cout << "3. City:             2 wheat 🌾 , 3 iron  🪨" << endl;
+                    cout << "4. Return" << endl; // Added option to return
+                    while (1)
                     {
-                        cout << "You do not have enough resources to build a settlement" << endl;
+                        choice = inputInt();
+                        if (choice >= 1 && choice <= 4)
+                        {
+                            break;
+                        }
+                        cout << "Invalid choice, please try again" << endl;
+                    }
+
+                    if (choice == 1)
+                    {
+                        player.placeSettlementUtil(board);
                         continue;
                     }
-                    else
+                    else if (choice == 2)
                     {
-                        cout << "Enter the vertex number to place your settlement: ";
-                        int vertexNum;
-                        vertexNum = inputInt();
-                        while (player.placeSettlement(board, vertexNum) == 0)
-                        {
-                            cout << "Invalid vertex, please try again" << endl;
-                            vertexNum = inputInt();
-                        }
-                        player.deleteResource(WOOD, 1);
-                        player.deleteResource(BRICK, 1);
-                        player.deleteResource(SHEEP, 1);
-                        player.deleteResource(WHEAT, 1);
+                        player.placeRoadUtil(board);
+                        continue;
+                    }
+                    else if (choice == 3)
+                    {
+                        player.placeCityUtil(board);
+                        continue;
+                    }
+                    if (choice == 4)
+                    {
+                        continue; // Exit the function to return to the previous menu
                     }
                 }
                 else if (choice == 2)
                 {
-                    cout << "Cost of building a road is: 1 wood 🌲, 1 brick 🧱" << endl;
-                    if (player.getResources()[WOOD] < 1 || player.getResources()[BRICK] < 1)
-                    {
-                        cout << "You do not have enough resources to build a road" << endl;
-                        continue;
-                    }
-                    else
-                    {
-                        cout << "Enter the edge number to place your road: ";
-                        int edgeNum;
-                        edgeNum = inputInt();
-                        while (player.placeRoad(board, edgeNum) == 0)
-                        {
-                            cout << "Invalid edge, please try again" << endl;
-                            edgeNum = inputInt();
-                        }
-                        player.deleteResource(WOOD, 1);
-                        player.deleteResource(BRICK, 1);
-                    }
+                    resourceTrade(player, player2, player3);
+                    continue;
                 }
                 else if (choice == 3)
                 {
-                    cout << "Cost of building a city is: 2 wheat 🌾, 3 iron 🪨" << endl;
-                    if (player.getResources()[WHEAT] < 2 || player.getResources()[IRON] < 3)
-                    {
-                        cout << "You do not have enough resources to build a city" << endl;
-                        continue;
-                    
-                    }
-                    else
-                    {
-                        cout << "Enter the vertex number to place your city: ";
-                        int vertexNum;
-                        vertexNum = inputInt();
-                        while (player.placeCity(board, vertexNum) == 0)
-                        {
-                            cout << "Invalid vertex, please try again" << endl;
-                            vertexNum = inputInt();
-                        }
-                        player.deleteResource(WHEAT, 2);
-                        player.deleteResource(IRON, 3);
-                    }
+                    buyDevCard(player);
+                    continue;
                 }
                 else if (choice == 4)
                 {
-                    cout << "Cost of buying a development card is: 1 sheep 🐑, 1 wheat 🌾, 1 iron 🪨" << endl;
-                    if (player.getResources()[SHEEP] < 1 || player.getResources()[WHEAT] < 1 || player.getResources()[IRON] < 1)
-                    {
-                        cout << "You do not have enough resources to buy a development card" << endl;
-                        continue;
-                    }
-                    else
-                    {
-                        unique_ptr<DevCard> card = getCard();
-                        player.addCard(std::move(card));
-                        player.deleteResource(SHEEP, 1);
-                        player.deleteResource(WHEAT, 1);
-                        player.deleteResource(IRON, 1);
-                        player.printCards();
-                    }
-                }
-            }
-            else if (choice == 2)
-            {
-                // player trade
-                pair<map<int, int>, map<int, int>> trade = player.trade();
-                map<int, int> wants_give = trade.first;  // what player wants to give
-                map<int, int> wants_take = trade.second; // what player wants to take
-                Player *player_to_take = nullptr;
-                vector<Player *> possible_trades;
-
-                if (player2.getResources()[0] - wants_take[0] >= 0 && player2.getResources()[1] - wants_take[1] >= 0 && player2.getResources()[2] - wants_take[2] >= 0 && player2.getResources()[3] - wants_take[3] >= 0 && player2.getResources()[4] - wants_take[4] >= 0)
-                {
-                    possible_trades.push_back(&player2);
-                }
-
-                if (player3.getResources()[0] - wants_take[0] >= 0 && player3.getResources()[1] - wants_take[1] >= 0 && player3.getResources()[2] - wants_take[2] >= 0 && player3.getResources()[3] - wants_take[3] >= 0 && player3.getResources()[4] - wants_take[4] >= 0)
-                {
-                    possible_trades.push_back(&player3);
-                }
-
-                if (possible_trades.empty())
-                {
-                    cout << "No player has the resources you want" << endl;
+                    player.endTurn();
                     return;
                 }
-                else
-                {
-                    for (int i = 0; i < possible_trades.size(); i++)
-                    {
-                        cout << "Player " << possible_trades.at(i)->getName() << ", you got requested to trade with " << player.getName() << endl;
-                        cout << "Player " << player.getName() << " wants to give: " << endl;
-                        cout << "wood 🌲: " << wants_give[0] << " brick 🧱: " << wants_give[1] << " sheep 🐑: " << wants_give[2] << " wheat 🌾: " << wants_give[3] << " iron 🪨  : " << wants_give[4] << endl;
-                        cout << "for: " << endl;
-                        cout << "wood 🌲: " << wants_take[0] << " brick 🧱: " << wants_take[1] << " sheep 🐑: " << wants_take[2] << " wheat 🌾: " << wants_take[3] << " iron 🪨  : " << wants_take[4] << endl;
-
-                        cout << "Player " << possible_trades.at(i)->getName() << ", do you want to trade with " << player.getName() << "?" << endl;
-                        cout << "1. Yes" << endl;
-                        cout << "2. No" << endl;
-                        while (1)
-                        {
-                            choice = inputInt();
-                            if (choice == 1 || choice == 2)
-                            {
-                                break;
-                            }
-                            cout << "Invalid choice, please try again" << endl;
-                        }
-                        if (choice == 1)
-                        {
-                            player_to_take = possible_trades.at(i);
-                            break;
-                        }
-                    }
-                    if (player_to_take == nullptr)
-                    {
-                        cout << "No player wants to trade with you" << endl;
-                        return;
-                    }
-                    else
-                    {
-                        player_to_take->addResource(0, wants_give[0]);
-                        player_to_take->addResource(1, wants_give[1]);
-                        player_to_take->addResource(2, wants_give[2]);
-                        player_to_take->addResource(3, wants_give[3]);
-                        player_to_take->addResource(4, wants_give[4]);
-                        player.addResource(0, wants_take[0]);
-                        player.addResource(1, wants_take[1]);
-                        player.addResource(2, wants_take[2]);
-                        player.addResource(3, wants_take[3]);
-                        player.addResource(4, wants_take[4]);
-
-                        player_to_take->deleteResource(0, wants_take[0]);
-                        player_to_take->deleteResource(1, wants_take[1]);
-                        player_to_take->deleteResource(2, wants_take[2]);
-                        player_to_take->deleteResource(3, wants_take[3]);
-                        player_to_take->deleteResource(4, wants_take[4]);
-
-                        player.deleteResource(0, wants_give[0]);
-                        player.deleteResource(1, wants_give[1]);
-                        player.deleteResource(2, wants_give[2]);
-                        player.deleteResource(3, wants_give[3]);
-                        player.deleteResource(4, wants_give[4]);
-                    }
-                }
             }
-            else if (choice == 3)
-            {
-                player.endTurn();
-            }
-            return;
+        }
         }
     }
-
 }
-
 
 // the game is over when a player reaches 10 points
 void Catan::printWinner()
@@ -609,7 +412,7 @@ unique_ptr<DevCard> Catan::getCard()
         return nullptr; // or throw an exception
     }
     auto card = std::move(devCards.back());
-    devCards.pop_back();
+    devCards.pop_back(); // remove the card from the deck
     return card;
 }
 
@@ -632,3 +435,143 @@ int Catan::inputInt()
     }
     return input;
 }
+
+int Catan::resourceTrade(Player &player, Player &player2, Player &player3)
+{
+    cout << "You have the following resources: " << endl;
+    player.printResources();
+    cout << "Would you like to trade with another player?" << endl;
+    cout << "1. Yes" << endl;
+    cout << "2. No" << endl;
+    cout << "3. Return" << endl; // Added option to return
+    int choice;
+    while (1)
+    {
+        choice = inputInt();
+        if (choice == 1 || choice == 2 || choice == 3)
+        {
+            break;
+        }
+        cout << "Invalid choice, please try again" << endl;
+    }
+    if (choice == 2)
+    {
+        return 0;
+    }
+    if (choice == 3)
+    {
+        return 0;
+    }
+    // player trade
+    pair<map<int, int>, map<int, int>> trade = player.trade();
+    map<int, int> wants_give = trade.first;  // what player wants to give
+    map<int, int> wants_take = trade.second; // what player wants to take
+    Player *player_to_take = nullptr;
+    vector<Player *> possible_trades;
+
+    if (player2.getResources()[0] - wants_take[0] >= 0 && player2.getResources()[1] - wants_take[1] >= 0 && player2.getResources()[2] - wants_take[2] >= 0 && player2.getResources()[3] - wants_take[3] >= 0 && player2.getResources()[4] - wants_take[4] >= 0)
+    {
+        possible_trades.push_back(&player2);
+    }
+
+    if (player3.getResources()[0] - wants_take[0] >= 0 && player3.getResources()[1] - wants_take[1] >= 0 && player3.getResources()[2] - wants_take[2] >= 0 && player3.getResources()[3] - wants_take[3] >= 0 && player3.getResources()[4] - wants_take[4] >= 0)
+    {
+        possible_trades.push_back(&player3);
+    }
+
+    if (possible_trades.empty())
+    {
+        cout << "No player has the resources you want" << endl;
+        return 0;
+    }
+    else
+    {
+        for (int i = 0; i < possible_trades.size(); i++)
+        {
+            cout << "Player " << possible_trades.at(i)->getName() << ", you got requested to trade with " << player.getName() << endl;
+            cout << "Player " << player.getName() << " wants to give: " << endl;
+            cout << "wood 🌲: " << wants_give[0] << " brick 🧱: " << wants_give[1] << " sheep 🐑: " << wants_give[2] << " wheat 🌾: " << wants_give[3] << " iron 🪨  : " << wants_give[4] << endl;
+            cout << "for: " << endl;
+            cout << "wood 🌲: " << wants_take[0] << " brick 🧱: " << wants_take[1] << " sheep 🐑: " << wants_take[2] << " wheat 🌾: " << wants_take[3] << " iron 🪨  : " << wants_take[4] << endl;
+
+            cout << "Player " << possible_trades.at(i)->getName() << ", do you want to trade with " << player.getName() << "?" << endl;
+            cout << "1. Yes" << endl;
+            cout << "2. No" << endl;
+            while (1)
+            {
+                choice = inputInt();
+                if (choice == 1 || choice == 2)
+                {
+                    break;
+                }
+                cout << "Invalid choice, please try again" << endl;
+            }
+            if (choice == 1)
+            {
+                player_to_take = possible_trades.at(i);
+                break;
+            }
+        }
+        if (player_to_take == nullptr)
+        {
+            cout << "No player wants to trade with you" << endl;
+            return 0;
+        }
+        else
+        {
+            player_to_take->addResource(0, wants_give[0]);
+            player_to_take->addResource(1, wants_give[1]);
+            player_to_take->addResource(2, wants_give[2]);
+            player_to_take->addResource(3, wants_give[3]);
+            player_to_take->addResource(4, wants_give[4]);
+            player.addResource(0, wants_take[0]);
+            player.addResource(1, wants_take[1]);
+            player.addResource(2, wants_take[2]);
+            player.addResource(3, wants_take[3]);
+            player.addResource(4, wants_take[4]);
+
+            player_to_take->deleteResource(0, wants_take[0]);
+            player_to_take->deleteResource(1, wants_take[1]);
+            player_to_take->deleteResource(2, wants_take[2]);
+            player_to_take->deleteResource(3, wants_take[3]);
+            player_to_take->deleteResource(4, wants_take[4]);
+
+            player.deleteResource(0, wants_give[0]);
+            player.deleteResource(1, wants_give[1]);
+            player.deleteResource(2, wants_give[2]);
+            player.deleteResource(3, wants_give[3]);
+            player.deleteResource(4, wants_give[4]);
+            return 1;
+        }
+    }
+}
+
+int Catan::buyDevCard(Player &player)
+{
+    // cout << "Cost of buying a development card is: 1 sheep 🐑, 1 wheat 🌾, 1 iron 🪨" << endl;
+    if (player.getResources()[SHEEP] < 1 || player.getResources()[WHEAT] < 1 || player.getResources()[IRON] < 1)
+    {
+        cout << "You do not have enough resources to buy a development card" << endl;
+        return 0;
+    }
+    else
+    {
+        unique_ptr<DevCard> card = getCard();
+        if (card == nullptr)
+        {
+            cout << "No more development cards available" << endl;
+            return 0;
+        }
+        else
+        {
+            cout << "You got a development card: " << card->type() << endl;
+            player.addCard(std::move(card));
+            player.deleteResource(SHEEP, 1);
+            player.deleteResource(WHEAT, 1);
+            player.deleteResource(IRON, 1);
+            player.printCards();
+            return 1;
+        }
+    }
+}
+
