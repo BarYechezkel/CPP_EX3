@@ -23,7 +23,6 @@ void Monopoly::use_card(Board &board, Player &player, vector<Player *> &players)
         }
         cout << "Invalid choice, please try again" << endl;
     }
-
     int resource = choice - 1;
     // all the other players need to give the chosen resource to the player
 

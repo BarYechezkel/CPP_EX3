@@ -65,8 +65,7 @@ public:
         // Shuffle the vector
         std::shuffle(devCards.begin(), devCards.end(), g);
     }
-    // chosen starting player
-    void ChooseStartingPlayer();
+
     // progress the game
     void progressGame();
     // set color to player
@@ -78,6 +77,8 @@ public:
     void firstTour(Board &board);
     void Dice7();
     int resourceTrade(Player &player, Player &p2, Player &p3);
+    int cardsTrade(Player &player, Player &p2, Player &p3);
+
     int buyDevCard(Player &player);
     void playerResources(Board &board);
     void ResourceDistribution(Board &board, int diceRoll);

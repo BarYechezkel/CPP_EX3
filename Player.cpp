@@ -65,11 +65,11 @@ int Player::playDevCard(Board &board, vector<Player *> &players)
             return 0;
         }
         cout << "Which dev card would you like to play?" << endl;
-        // cout << "1. Knight" << endl;
-        // cout << "2. Road Building" << endl;
-        // cout << "3. Year of Plenty" << endl;
-        // cout << "4. Monopoly" << endl;
-        // cout << "5. Victory Point" << endl;
+        // cout << "1. Victory Point" << endl;
+        // cout << "2. Knight" << endl;
+        // cout << "3. Road Building" << endl;
+        // cout << "4. Year of Plenty" << endl;
+        // cout << "5. Monopoly" << endl;
         printCards();
         cout << "6. Return" << endl; // Added option to return
         int choice;
@@ -110,7 +110,7 @@ int Player::playDevCard(Board &board, vector<Player *> &players)
             if (devCards["Knight"] < 3)
             {
                 cout << "You need 3 knight cards to get 2 points" << endl;
-                continue;
+                return 6;
             }
             if (devCards["Knight"] >= 3)
             {
@@ -238,6 +238,26 @@ void Player::addPoints(int points)
     this->points += points;
 }
 
+map<string, int> &Player::getCards()
+{
+    return devCards;
+}
+
+unique_ptr<DevCard> Player::getCard(string cardType)
+{
+    for (auto it = vecDevCards.begin(); it != vecDevCards.end(); ++it)
+    {
+        if ((*it)->type() == cardType)
+        {
+            unique_ptr<DevCard> card = move(*it); // Move the card out of the vector
+            vecDevCards.erase(it);                // Remove the now-null unique_ptr from the vector
+            devCards[cardType]--;                 // Decrement the count of this card type
+            return card;                          // Return the moved card
+        }
+    }
+    return nullptr; // Return nullptr if the card type is not found
+}
+
 // Mutators
 void Player::setName(string name)
 {
@@ -252,6 +272,7 @@ void Player::setColor(int color)
 void Player::addResource(int resource, int amount)
 {
     resources[resource] += amount;
+    // cout << "You have received " << amount << " " << resource << endl;
 }
 
 void Player::deleteResource(int resource, int amount)
@@ -270,9 +291,100 @@ int Player::rollDice()
     return dice;
 }
 
-void Player::trade(Player p2, string give, string take, int giveNum, int takeNum)
+pair<map<int, int>, map<int, int>> Player::cardsTrade()
 {
-    // Implement trade logic
+    // cout << "You have the following resources: " << endl;
+    printCards();
+    cout << "what would you like to give?" << endl;
+    int victoryPoint_give;
+    int knight_give;
+    int roadBuilding_give;
+    int yearOfPlenty_give;
+    int monopoly_give;
+
+    // cout << "1. Wood 🌲 between 0 - " << resources[0] << ": ";
+    cout << "1. Victory Point 0 - " << devCards["VictoryPoint"] << ": ";
+    while (1)
+    {
+        victoryPoint_give = inputInt();
+        if (victoryPoint_give >= 0 && victoryPoint_give <= devCards["VictoryPoint"])
+        {
+            break;
+        }
+        cout << "Invalid input, please try again" << endl;
+    }
+    cout << "2. Knight between 0 - " << devCards["Knight"] << ": ";
+    while (1)
+    {
+        knight_give = inputInt();
+        if (knight_give >= 0 && knight_give <= devCards["Knight"])
+        {
+            break;
+        }
+        cout << "Invalid input, please try again" << endl;
+    }
+    cout << "3. Road Building between 0 - " << devCards["RoadBuilding"] << ": ";
+    while (1)
+    {
+        roadBuilding_give = inputInt();
+        if (roadBuilding_give >= 0 && roadBuilding_give <= devCards["RoadBuilding"])
+        {
+            break;
+        }
+        cout << "Invalid input, please try again" << endl;
+    }
+    cout << "4. Year Of Plenty between 0 - " << devCards["YearOfPlenty"] << ": ";
+    while (1)
+    {
+        yearOfPlenty_give = inputInt();
+        if (yearOfPlenty_give >= 0 && yearOfPlenty_give <= devCards["YearOfPlenty"])
+        {
+            break;
+        }
+        cout << "Invalid input, please try again" << endl;
+    }
+    cout << "5. Monopoly between 0 - " << devCards["Monopoly"] << ": ";
+    while (1)
+    {
+        monopoly_give = inputInt();
+        if (monopoly_give >= 0 && monopoly_give <= devCards["Monopoly"])
+        {
+            break;
+        }
+        cout << "Invalid input, please try again" << ": ";
+    }
+    cout << endl;
+    map<int, int> want_give;
+    want_give[0] = victoryPoint_give;
+    want_give[1] = knight_give;
+    want_give[2] = roadBuilding_give;
+    want_give[3] = yearOfPlenty_give;
+    want_give[4] = monopoly_give;
+
+    map<int, int> want_take;
+    cout << "what would you like to receive?" << endl;
+    int victoryPoint_take;
+    int knight_take;
+    int roadBuilding_take;
+    int yearOfPlenty_take;
+    int monopoly_take;
+    cout << "1. Victory Point: ";
+    victoryPoint_take = inputInt(); // cout << endl;
+    cout << "2. Knight: ";
+    knight_take = inputInt(); // cout << endl;
+    cout << "3. Road Building: ";
+    roadBuilding_take = inputInt(); // cout << endl;
+    cout << "4. Year Of Plenty: ";
+    yearOfPlenty_take = inputInt(); // cout << endl;
+    cout << "5. Monopoly: ";
+    monopoly_take = inputInt(); // cout << endl;
+    cout << endl;
+    want_take[0] = victoryPoint_take;
+    want_take[1] = knight_take;
+    want_take[2] = roadBuilding_take;
+    want_take[3] = yearOfPlenty_take;
+    want_take[4] = monopoly_take;
+    return {want_give, want_take};
 }
 
 void Player::endTurn()
@@ -280,17 +392,16 @@ void Player::endTurn()
     // Implement end turn logic
 }
 
-
 void Player::printResources()
 {
     // Print the defined resources
     // cout << "Player " << name << " has the following resources: " << endl;
     // Emoji
-    cout << "Wood  🌲 : " << resources[0] << endl;  // Tree emoji for Wood
-    cout << "Brick 🧱 : " << resources[1] << endl;  // Brick emoji
-    cout << "Sheep 🐑 : " << resources[2] << endl;  // Sheep emoji
-    cout << "Wheat 🌾 : " << resources[3] << endl;  // Wheat emoji
-    cout << "Iron  🪨  : " << resources[4] << endl; // Wheat emoji
+    cout << "Wood  🌲 : " << resources[WOOD] << endl;  // Tree emoji for Wood
+    cout << "Brick 🧱 : " << resources[BRICK] << endl; // Brick emoji
+    cout << "Sheep 🐑 : " << resources[SHEEP] << endl; // Sheep emoji
+    cout << "Wheat 🌾 : " << resources[WHEAT] << endl; // Wheat emoji
+    cout << "Iron  🪨  : " << resources[IRON] << endl; // Wheat emoji
 }
 
 // Placement actions
@@ -311,7 +422,8 @@ int Player::placeSettlementFirst(Board &board, int vertexNum)
     board.getVertex(vertexNum)->buildSettlement(color);
     for (int i = 0; i < board.getVertex(vertexNum)->getResources().size(); i++)
     {
-        resources[i] += board.getVertex(vertexNum)->getResources()[i];
+        addResource(i, board.getVertex(vertexNum)->getResources()[i]);
+        // resources[i] += board.getVertex(vertexNum)->getResources()[i];
     }
     points++;
     return 1;
@@ -379,7 +491,7 @@ int Player::placeSettlement(Board &board, int vertexNum)
             for (Vertex *endVertex : {firstEdge->getVertex1(), firstEdge->getVertex2()})
             {
                 if (endVertex->getId() != vertexNum &&
-                    (endVertex->getHasSettlement() == 0 || endVertex->getHasCity() == 0))
+                    (endVertex->getHasSettlement() == 0 && endVertex->getHasCity() == 0))
                 {
                     otherVertex = endVertex->getId();
                     // Loop through the edges of the other vertex to check if it's connected to other player-owned edges
@@ -402,7 +514,9 @@ int Player::placeSettlement(Board &board, int vertexNum)
 
     // If no valid location is found, return 0 indicating failure
     if (!isValid)
+    {
         return 0;
+    }
 
     // If a valid location is found, place the settlement and increment points, then return 1 indicating success
     board.getVertex(vertexNum)->buildSettlement(color);
@@ -527,15 +641,15 @@ int Player::placeCityUtil(Board &board)
     int vertexNum;
     vertexNum = inputInt();
     while (placeCity(board, vertexNum) == 0)
-        {
-            cout << "Invalid vertex, please try again. or enter -1 to exit" << endl;
-            vertexNum = inputInt();
+    {
+        cout << "Invalid vertex, please try again. or enter -1 to exit" << endl;
+        vertexNum = inputInt();
 
-            if (vertexNum == -1)
-            {
-                return 0;
-            }
+        if (vertexNum == -1)
+        {
+            return 0;
         }
+    }
     deleteResource(WHEAT, 2);
     deleteResource(IRON, 3);
     return 1;

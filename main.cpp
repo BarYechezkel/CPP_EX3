@@ -10,7 +10,7 @@ int main()
     Player p3("Player3");
     Board board;
     Catan catan(p1, p2, p3, board);
-    // p2.addPoints(10);
+// p1.printResources();
     catan.StartGame();
     catan.progressGame();
     // p1.setColor(2);

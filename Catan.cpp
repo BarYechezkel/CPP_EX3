@@ -16,54 +16,6 @@ class Board;
 // cout << "🌾 Wheat: " << resources[4] << endl;  // Wheat emoji
 // cout << "🪨 Iron:
 // 🌲🧱 🐑🌾🪨
-int main()
-{
-    Player p1("Player1");
-    Player p2("Player2");
-    Player p3("Player3");
-    Board board;
-    Catan catan(p1, p2, p3, board);
-    // p2.addPoints(10);
-    catan.StartGame();
-    catan.progressGame();
-    // p1.setColor(2);
-    // p1.placeSettlementFirst(board,8);
-    // p1.placeRoad(board,12);
-    // p1.placeRoad(board,11);
-    // p1.placeSettlement(board,7);
-    // p1.placeRoad(board,10);
-    // board.printBoard();
-
-    // cout << "enter cin"<<endl;
-    // int x;
-    // cin >> x;
-    // while (p1.placeSettlement(board, x) == 0)
-    // {
-    //     cout << "enter cin"<<endl;
-    //     cin >> x;
-    // }
-
-    // board.printBoard();
-    //    board.printBoard();
-    //  //  p1.placeSettlement(board, 0);
-    //    p1.placeRoad(board, 0);
-    //     p1.placeCity(board, 0);
-    //    p1.printResources();
-    //  board.printBoard();
-
-    //     p2.placeSettlement(board, 3);
-    //     p1.placeSettlement(board, 4);
-    //     p3.placeSettlement(board, 7);
-    //     p2.placeSettlement(board, 4);
-    //     board.getVertex(3)->printVertex();
-    //     p2.placeRoad(board, 0);
-    //     p1.placeRoad(board, 4);
-    //     p2.placeCity(board, 3);
-
-    //    board.printBoard();
-    // catan.getBoard().printBoard();
-    return 0;
-}
 
 void Catan::SetPlayerColor()
 {
@@ -133,65 +85,64 @@ void Catan::firstTour(Board &board)
         cout << "Invalid edge, please try again" << endl;
         edgeNum = inputInt();
     }
-    // // BLUE player goes second
-    cout << "Player 2, " << p2.getName() << ", place your first settlement: ";
-    vertexNum = inputInt();
-    while (p2.placeSettlementFirst(board, vertexNum) == 0)
-    {
-        cout << "Invalid vertex, please try again" << endl;
-        vertexNum = inputInt();
-    }
-    cout << "Player 2, " << p2.getName() << ", place your first road: ";
-    edgeNum = inputInt();
-    while (p2.placeRoad(board, edgeNum) == 0)
-    {
-        cout << "Invalid edge, please try again" << endl;
-        edgeNum = inputInt();
-    }
-    cout << "Player 2, " << p2.getName() << ", place your second settlement: ";
-    vertexNum = inputInt();
-    while (p2.placeSettlementFirst(board, vertexNum) == 0)
-    {
-        cout << "Invalid vertex, please try again" << endl;
-        vertexNum = inputInt();
-    }
-    // p2.addResource(board.getVertex(vertexNum)->getResource(),1);
-    cout << "Player 2, " << p2.getName() << ", place your second road: ";
-    edgeNum = inputInt();
-    while (p2.placeRoad(board, edgeNum) == 0)
-    {
-        cout << "Invalid edge, please try again" << endl;
-        edgeNum = inputInt();
-    }
-    // GREEN player goes third
-    cout << "Player 3, " << p3.getName() << ", place your first settlement: ";
-    vertexNum = inputInt();
-    while (p3.placeSettlementFirst(board, vertexNum) == 0)
-    {
-        cout << "Invalid vertex, please try again" << endl;
-        vertexNum = inputInt();
-    }
-    cout << "Player 3, " << p3.getName() << ", place your first road: ";
-    edgeNum = inputInt();
-    while (p3.placeRoad(board, edgeNum) == 0)
-    {
-        cout << "Invalid edge, please try again" << endl;
-        edgeNum = inputInt();
-    }
-    cout << "Player 3, " << p3.getName() << ", place your second settlement: ";
-    vertexNum = inputInt();
-    while (p3.placeSettlementFirst(board, vertexNum) == 0)
-    {
-        cout << "Invalid vertex, please try again" << endl;
-        vertexNum = inputInt();
-    }
-    cout << "Player 3, " << p3.getName() << ", place your second road: ";
-    edgeNum = inputInt();
-    while (p3.placeRoad(board, edgeNum) == 0)
-    {
-        cout << "Invalid edge, please try again" << endl;
-        edgeNum = inputInt();
-    }
+    // // // BLUE player goes second
+    // cout << "Player 2, " << p2.getName() << ", place your first settlement: ";
+    // vertexNum = inputInt();
+    // while (p2.placeSettlementFirst(board, vertexNum) == 0)
+    // {
+    //     cout << "Invalid vertex, please try again" << endl;
+    //     vertexNum = inputInt();
+    // }
+    // cout << "Player 2, " << p2.getName() << ", place your first road: ";
+    // edgeNum = inputInt();
+    // while (p2.placeRoad(board, edgeNum) == 0)
+    // {
+    //     cout << "Invalid edge, please try again" << endl;
+    //     edgeNum = inputInt();
+    // }
+    // cout << "Player 2, " << p2.getName() << ", place your second settlement: ";
+    // vertexNum = inputInt();
+    // while (p2.placeSettlementFirst(board, vertexNum) == 0)
+    // {
+    //     cout << "Invalid vertex, please try again" << endl;
+    //     vertexNum = inputInt();
+    // }
+    // cout << "Player 2, " << p2.getName() << ", place your second road: ";
+    // edgeNum = inputInt();
+    // while (p2.placeRoad(board, edgeNum) == 0)
+    // {
+    //     cout << "Invalid edge, please try again" << endl;
+    //     edgeNum = inputInt();
+    // }
+    // // GREEN player goes third
+    // cout << "Player 3, " << p3.getName() << ", place your first settlement: ";
+    // vertexNum = inputInt();
+    // while (p3.placeSettlementFirst(board, vertexNum) == 0)
+    // {
+    //     cout << "Invalid vertex, please try again" << endl;
+    //     vertexNum = inputInt();
+    // }
+    // cout << "Player 3, " << p3.getName() << ", place your first road: ";
+    // edgeNum = inputInt();
+    // while (p3.placeRoad(board, edgeNum) == 0)
+    // {
+    //     cout << "Invalid edge, please try again" << endl;
+    //     edgeNum = inputInt();
+    // }
+    // cout << "Player 3, " << p3.getName() << ", place your second settlement: ";
+    // vertexNum = inputInt();
+    // while (p3.placeSettlementFirst(board, vertexNum) == 0)
+    // {
+    //     cout << "Invalid vertex, please try again" << endl;
+    //     vertexNum = inputInt();
+    // }
+    // cout << "Player 3, " << p3.getName() << ", place your second road: ";
+    // edgeNum = inputInt();
+    // while (p3.placeRoad(board, edgeNum) == 0)
+    // {
+    //     cout << "Invalid edge, please try again" << endl;
+    //     edgeNum = inputInt();
+    // }
 }
 
 void Catan::Dice7()
@@ -309,13 +260,14 @@ void Catan::turn(Board &board, Player &player, Player &player2, Player &player3)
                 player.printResources();
                 cout << "Would you like to build, trade, or end your turn?" << endl;
                 cout << "1. Build" << endl;
-                cout << "2. Trade" << endl;
-                cout << "3. Buy dev card. cost: 1 sheep 🐑 , 1 wheat 🌾 , 1 iron  🪨" << endl;
-                cout << "4. End turn" << endl;
+                cout << "2. Trade resources" << endl;
+                cout << "3. Trade cards" << endl;
+                cout << "4. Buy dev card. cost: 1 sheep 🐑 , 1 wheat 🌾 , 1 iron  🪨" << endl;
+                cout << "5. End turn" << endl;
                 while (1)
                 {
                     choice = inputInt();
-                    if (choice == 1 || choice == 2 || choice == 3 || choice == 4)
+                    if (choice == 1 || choice == 2 || choice == 3 || choice == 4 || choice == 5)
                     {
                         break;
                     }
@@ -365,10 +317,15 @@ void Catan::turn(Board &board, Player &player, Player &player2, Player &player3)
                 }
                 else if (choice == 3)
                 {
-                    buyDevCard(player);
+                    cardsTrade(player, player2, player3);
                     continue;
                 }
                 else if (choice == 4)
+                {
+                    buyDevCard(player);
+                    continue;
+                }
+                else if (choice == 5)
                 {
                     player.endTurn();
                     return;
@@ -510,6 +467,7 @@ int Catan::resourceTrade(Player &player, Player &player2, Player &player3)
     {
         return 0;
     }
+
     // player trade
     pair<map<int, int>, map<int, int>> trade = player.trade();
     map<int, int> wants_give = trade.first;  // what player wants to give
@@ -594,6 +552,152 @@ int Catan::resourceTrade(Player &player, Player &player2, Player &player3)
     }
 }
 
+int Catan::cardsTrade(Player &player, Player &player2, Player &player3)
+{
+    //     1. victory point: 2
+    // 2. Knight: 2
+    // 3. Road Building: 2
+    // 4. Year Of Plenty: 1
+    // 5. Monopoly: 2
+    cout << "You have the following cards: " << endl;
+    player.printCards();
+    cout << "Would you like to trade with another player?" << endl;
+    cout << "1. Yes" << endl;
+    cout << "2. No" << endl;
+    cout << "3. Return" << endl; // Added option to return
+    int choice;
+    while (1)
+    {
+        choice = inputInt();
+        if (choice == 1 || choice == 2 || choice == 3)
+        {
+            break;
+        }
+        cout << "Invalid choice, please try again" << endl;
+    }
+    if (choice == 2)
+    {
+        return 0;
+    }
+    if (choice == 3)
+    {
+        return 0;
+    }
+
+    // player trade
+    pair<map<int, int>, map<int, int>> trade = player.cardsTrade();
+    map<int, int> wants_give = trade.first;  // what player wants to give
+    map<int, int> wants_take = trade.second; // what player wants to take
+    Player *player_to_take = nullptr;
+    vector<Player *> possible_trades;
+    if (player2.getCards()["VictoryPoint"] - wants_take[0] >= 0 && player2.getCards()["Knight"] - wants_take[1] >= 0 && player2.getCards()["RoadBuilding"] - wants_take[2] >= 0 && player2.getCards()["YearOfPlenty"] - wants_take[3] >= 0 && player2.getCards()["Monopoly"] - wants_take[4] >= 0)
+    {
+        possible_trades.push_back(&player2);
+    }
+
+    if (player3.getCards()["VictoryPoint"] - wants_take[0] >= 0 && player3.getCards()["Knight"] - wants_take[1] >= 0 && player3.getCards()["RoadBuilding"] - wants_take[2] >= 0 && player3.getCards()["YearOfPlenty"] - wants_take[3] >= 0 && player3.getCards()["Monopoly"] - wants_take[4] >= 0)
+    {
+        possible_trades.push_back(&player3);
+    }
+
+    if (possible_trades.empty())
+    {
+        cout << "No player has the cards you want" << endl;
+        return 0;
+    }
+    else
+    {
+        for (int i = 0; i < possible_trades.size(); i++)
+        {
+            cout << "Player " << possible_trades.at(i)->getName() << ", you got requested to trade cards with " << player.getName() << endl;
+            cout << "Player " << player.getName() << " wants to give: " << endl;
+            cout << "VictoryPoint: " << wants_give[0] << " Knight: " << wants_give[1] << " RoadBuilding: " << wants_give[2] << " YearOfPlenty: " << wants_give[3] << " Monopoly: " << wants_give[4] << endl;
+            cout << "for: " << endl;
+            cout << "VictoryPoint: " << wants_take[0] << " Knight: " << wants_take[1] << " RoadBuilding: " << wants_take[2] << " YearOfPlenty: " << wants_take[3] << " Monopoly: " << wants_take[4] << endl;
+
+            cout << "Player " << possible_trades.at(i)->getName() << ", do you want to trade with " << player.getName() << "?" << endl;
+            cout << "1. Yes" << endl;
+            cout << "2. No" << endl;
+            while (1)
+            {
+                choice = inputInt();
+                if (choice == 1 || choice == 2)
+                {
+                    break;
+                }
+                cout << "Invalid choice, please try again" << endl;
+            }
+            if (choice == 1)
+            {
+                player_to_take = possible_trades.at(i);
+                break;
+            }
+        }
+        if (player_to_take == nullptr)
+        {
+            cout << "No player wants to trade with you" << endl;
+            return 0;
+        }
+        else
+        {
+            // cout << "---------------------------------" << endl;
+            // player.printCards();
+            // cout << "---" << endl;
+            // player_to_take->printCards();
+            // cout << "---------------------------------" << endl;
+
+            for (int i = 0; i < wants_give[0]; i++)
+            {
+                player_to_take->addCard(player.getCard("VictoryPoint"));
+            }
+            for (int i = 0; i < wants_give[1]; i++)
+            {
+                player_to_take->addCard(player.getCard("Knight"));
+            }
+            for (int i = 0; i < wants_give[2]; i++)
+            {
+                player_to_take->addCard(player.getCard("RoadBuilding"));
+            }
+            for (int i = 0; i < wants_give[3]; i++)
+            {
+                player_to_take->addCard(player.getCard("YearOfPlenty"));
+            }
+            for (int i = 0; i < wants_give[4]; i++)
+            {
+                player_to_take->addCard(player.getCard("Monopoly"));
+            }
+
+            for (int i = 0; i < wants_take[0]; i++)
+            {
+                player.addCard(player_to_take->getCard("VictoryPoint"));
+            }
+            for (int i = 0; i < wants_take[1]; i++)
+            {
+                player.addCard(player_to_take->getCard("Knight"));
+            }
+            for (int i = 0; i < wants_take[2]; i++)
+            {
+                player.addCard(player_to_take->getCard("RoadBuilding"));
+            }
+            for (int i = 0; i < wants_take[3]; i++)
+            {
+                player.addCard(player_to_take->getCard("YearOfPlenty"));
+            }
+            for (int i = 0; i < wants_take[4]; i++)
+            {
+                player.addCard(player_to_take->getCard("Monopoly"));
+            }
+
+            // cout << "---------------------------------" << endl;
+            // player.printCards();
+            // cout << "---" << endl;
+            // player_to_take->printCards();
+            // cout << "---------------------------------" << endl;
+            return 1;
+        }
+    }
+}
+
 int Catan::buyDevCard(Player &player)
 {
     // cout << "Cost of buying a development card is: 1 sheep 🐑, 1 wheat 🌾, 1 iron 🪨" << endl;
@@ -622,4 +726,3 @@ int Catan::buyDevCard(Player &player)
         }
     }
 }
-

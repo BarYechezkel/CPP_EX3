@@ -24,11 +24,11 @@ public:
     // Constructor
     Player(string name) : name(name), points(0), color()
     {
-        resources[0] = 5; // wood
-        resources[1] = 5; // brick
-        resources[2] = 5; // sheep
-        resources[3] = 5; // wheat
-        resources[4] = 5; // iron
+        resources[WOOD] = 0; // wood
+        resources[BRICK] = 0; // brick
+        resources[SHEEP] = 0; // sheep
+        resources[WHEAT] = 0; // wheat
+        resources[IRON] = 0; // iron
 
         devCards["Knight"] = 0;
         devCards["VictoryPoint"] = 0;
@@ -49,9 +49,13 @@ public:
     void addCard(unique_ptr<DevCard> card);
     void removeCard(string cardType,int cardNum);
     void useCard(string cardType, Board &board, vector<Player*> &players);
-    // void updateDevCards();
     void printCards();
     void addPoints(int points);
+    map<string, int> &getCards();
+    unique_ptr<DevCard> getCard(string);
+
+
+
 
     // Mutators
     void setName(std::string name);
@@ -61,7 +65,7 @@ public:
 
     // Game actions
     int rollDice();
-    void trade(Player p2, std::string give, std::string take, int giveNum, int takeNum);
+    pair <map <int,int>,map <int,int>> cardsTrade(); // for trading resources// for dev card trading
     void endTurn();
     void printResources();
 
@@ -73,7 +77,7 @@ public:
     int placeRoadUtil(Board &board);
     int placeCity(Board &board, int vertexNum);
     int placeCityUtil(Board &board);
-    pair <map <int,int>,map <int,int>> trade();
+    pair <map <int,int>,map <int,int>> trade(); // for trading resources
     int discardHalf();
     int discardUtility(int to_discard);
 

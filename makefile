@@ -4,12 +4,15 @@ CXX = clang++
 
 .PHONY: all clean
 
-all: Catan
+all: main
 
-Catan:  Catan.o Tile.o Player.o Board.o Vertex.o Edge.o Knight.o RoadBuilding.o Monopoly.o YearOfPlenty.o VictoryPoint.o
+main: main.o Catan.o Tile.o Player.o Board.o Vertex.o Edge.o Knight.o RoadBuilding.o Monopoly.o YearOfPlenty.o VictoryPoint.o
 	$(CXX) -o $@ $^
 
-Catan.o: Catan.cpp Catan.hpp
+main.o: main.cpp Catan.hpp
+	$(CXX) -c -o $@ main.cpp
+
+Catan.o: Catan.cpp
 	$(CXX) -c -o $@ $<
 	
 Player.o: Player.cpp Player.hpp
@@ -42,6 +45,14 @@ YearOfPlenty.o: YearOfPlenty.cpp YearOfPlenty.hpp
 VictoryPoint.o: VictoryPoint.cpp VictoryPoint.hpp
 	$(CXX) -c -o $@ $<
 
+	
+Test.o: Test.cpp
+	$(CXX) -c -o $@ $<
+
+test: Test.o Catan.o Tile.o Player.o Board.o Vertex.o Edge.o Knight.o RoadBuilding.o Monopoly.o YearOfPlenty.o VictoryPoint.o
+	$(CXX) -o test $^
+	./test
+
 
 clean:
-	 rm -f Catan *.o
+	 rm -f main test *.o
