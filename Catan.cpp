@@ -85,64 +85,64 @@ void Catan::firstTour(Board &board)
         cout << "Invalid edge, please try again" << endl;
         edgeNum = inputInt();
     }
-    // // // BLUE player goes second
-    // cout << "Player 2, " << p2.getName() << ", place your first settlement: ";
-    // vertexNum = inputInt();
-    // while (p2.placeSettlementFirst(board, vertexNum) == 0)
-    // {
-    //     cout << "Invalid vertex, please try again" << endl;
-    //     vertexNum = inputInt();
-    // }
-    // cout << "Player 2, " << p2.getName() << ", place your first road: ";
-    // edgeNum = inputInt();
-    // while (p2.placeRoad(board, edgeNum) == 0)
-    // {
-    //     cout << "Invalid edge, please try again" << endl;
-    //     edgeNum = inputInt();
-    // }
-    // cout << "Player 2, " << p2.getName() << ", place your second settlement: ";
-    // vertexNum = inputInt();
-    // while (p2.placeSettlementFirst(board, vertexNum) == 0)
-    // {
-    //     cout << "Invalid vertex, please try again" << endl;
-    //     vertexNum = inputInt();
-    // }
-    // cout << "Player 2, " << p2.getName() << ", place your second road: ";
-    // edgeNum = inputInt();
-    // while (p2.placeRoad(board, edgeNum) == 0)
-    // {
-    //     cout << "Invalid edge, please try again" << endl;
-    //     edgeNum = inputInt();
-    // }
-    // // GREEN player goes third
-    // cout << "Player 3, " << p3.getName() << ", place your first settlement: ";
-    // vertexNum = inputInt();
-    // while (p3.placeSettlementFirst(board, vertexNum) == 0)
-    // {
-    //     cout << "Invalid vertex, please try again" << endl;
-    //     vertexNum = inputInt();
-    // }
-    // cout << "Player 3, " << p3.getName() << ", place your first road: ";
-    // edgeNum = inputInt();
-    // while (p3.placeRoad(board, edgeNum) == 0)
-    // {
-    //     cout << "Invalid edge, please try again" << endl;
-    //     edgeNum = inputInt();
-    // }
-    // cout << "Player 3, " << p3.getName() << ", place your second settlement: ";
-    // vertexNum = inputInt();
-    // while (p3.placeSettlementFirst(board, vertexNum) == 0)
-    // {
-    //     cout << "Invalid vertex, please try again" << endl;
-    //     vertexNum = inputInt();
-    // }
-    // cout << "Player 3, " << p3.getName() << ", place your second road: ";
-    // edgeNum = inputInt();
-    // while (p3.placeRoad(board, edgeNum) == 0)
-    // {
-    //     cout << "Invalid edge, please try again" << endl;
-    //     edgeNum = inputInt();
-    // }
+    // // BLUE player goes second
+    cout << "Player 2, " << p2.getName() << ", place your first settlement: ";
+    vertexNum = inputInt();
+    while (p2.placeSettlementFirst(board, vertexNum) == 0)
+    {
+        cout << "Invalid vertex, please try again" << endl;
+        vertexNum = inputInt();
+    }
+    cout << "Player 2, " << p2.getName() << ", place your first road: ";
+    edgeNum = inputInt();
+    while (p2.placeRoad(board, edgeNum) == 0)
+    {
+        cout << "Invalid edge, please try again" << endl;
+        edgeNum = inputInt();
+    }
+    cout << "Player 2, " << p2.getName() << ", place your second settlement: ";
+    vertexNum = inputInt();
+    while (p2.placeSettlementFirst(board, vertexNum) == 0)
+    {
+        cout << "Invalid vertex, please try again" << endl;
+        vertexNum = inputInt();
+    }
+    cout << "Player 2, " << p2.getName() << ", place your second road: ";
+    edgeNum = inputInt();
+    while (p2.placeRoad(board, edgeNum) == 0)
+    {
+        cout << "Invalid edge, please try again" << endl;
+        edgeNum = inputInt();
+    }
+    // GREEN player goes third
+    cout << "Player 3, " << p3.getName() << ", place your first settlement: ";
+    vertexNum = inputInt();
+    while (p3.placeSettlementFirst(board, vertexNum) == 0)
+    {
+        cout << "Invalid vertex, please try again" << endl;
+        vertexNum = inputInt();
+    }
+    cout << "Player 3, " << p3.getName() << ", place your first road: ";
+    edgeNum = inputInt();
+    while (p3.placeRoad(board, edgeNum) == 0)
+    {
+        cout << "Invalid edge, please try again" << endl;
+        edgeNum = inputInt();
+    }
+    cout << "Player 3, " << p3.getName() << ", place your second settlement: ";
+    vertexNum = inputInt();
+    while (p3.placeSettlementFirst(board, vertexNum) == 0)
+    {
+        cout << "Invalid vertex, please try again" << endl;
+        vertexNum = inputInt();
+    }
+    cout << "Player 3, " << p3.getName() << ", place your second road: ";
+    edgeNum = inputInt();
+    while (p3.placeRoad(board, edgeNum) == 0)
+    {
+        cout << "Invalid edge, please try again" << endl;
+        edgeNum = inputInt();
+    }
 }
 
 void Catan::Dice7()
