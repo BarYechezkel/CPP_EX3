@@ -71,4 +71,4 @@ To start the game, run the compiled executable. The game will initialize the pla
 
 - Base class for development cards.
 - Derived classes: `Knight`, `VictoryPoint`, `RoadBuilding`, `YearOfPlenty`, and `Monopoly`.
-
+ 
