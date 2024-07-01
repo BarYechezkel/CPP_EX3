@@ -21,10 +21,7 @@ The Catan game project is a C++ implementation of the Settlers of Catan board ga
 
 ### Prerequisites
 
-Make sure you have the following installed:
-
-- A C++ compiler (e.g., `g++`)
-- CMake (optional, but recommended for building the project)
+Ensure you have a C++ compiler (like g++ or clang++) installed on your system.
 
 ### Building the Project
 
@@ -75,4 +72,11 @@ To start the game, run the compiled executable. The game will initialize the pla
 
 - Base class for development cards.
 - Derived classes: `Knight`, `VictoryPoint`, `RoadBuilding`, `YearOfPlenty`, and `Monopoly`.
+
+### Tests
+
+-The code was checked with many tests in Test.cpp with the make test command.
+
+
+
  
