@@ -2,55 +2,73 @@
 - Bar Yechezkel
 - Email: baryechezkel@gmail.com
 
-# Catan Game Simulation
+# Catan Game Project
 
-This project is a C++ implementation of a basic Catan game simulation. The game includes players, a board, and development cards. The main components are structured into different classes: `Player`, `Board`, and `Catan`.
+This project is an implementation of the popular board game Catan using C++.
 
 ## Table of Contents
+
+- [Introduction](#introduction)
 - [Getting Started](#getting-started)
-- [Prerequisites](#prerequisites)
-- [Building the Project](#building-the-project)
-- [Running the Game](#running-the-game)
-- [Game Rules and Logic](#game-rules-and-logic)
-- [File Descriptions](#file-descriptions)
-- [Authors](#authors)
+- [Usage](#usage)
+- [Classes Overview](#classes-overview)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Introduction
+
+The Catan game project is a C++ implementation of the Settlers of Catan board game. The game involves players building settlements, roads, and cities to gather resources and gain victory points. The player with the most victory points at the end of the game wins.
 
 ## Getting Started
 
-These instructions will help you set up the project on your local machine.
-
 ### Prerequisites
 
-- A C++ compiler supporting C++11 or later
-- CMake (optional, but recommended for building)
+Make sure you have the following installed:
+
+- A C++ compiler (e.g., `g++`)
+- CMake (optional, but recommended for building the project)
 
 ### Building the Project
 
-To build the project, follow these steps:
-
 1. Clone the repository:
-    ```sh
-    git clone https://github.com/your-username/catan-game-simulation.git
-    ```
-2. Navigate to the project directory:
-    ```sh
-    cd catan-game-simulation
-    ```
-3. Compile the project using a C++ compiler:
-    ```sh
-    g++ main.cpp Catan.cpp Player.cpp Board.cpp -o catan-game
-    ```
-   Alternatively, if you are using CMake:
-    ```sh
-    mkdir build
-    cd build
-    cmake ..
-    make
+    ```bash
+    git clone https://github.com/your-username/catan-game.git
+    cd catan-game
     ```
 
-### Running the Game
+2. Compile the project:
+    ```bash
+    g++ -o catan main.cpp Catan.cpp Player.cpp Board.cpp DevCard.cpp Knight.cpp VictoryPoint.cpp RoadBuilding.cpp YearOfPlenty.cpp Monopoly.cpp
+    ```
 
-To run the game, execute the compiled binary:
+3. Run the executable:
+    ```bash
+    ./catan
+    ```
 
-```sh
-./catan-game
+## Usage
+
+To start the game, run the compiled executable. The game will initialize the players, board, and development cards, then proceed with the game turns. Follow the on-screen instructions to play.
+
+## Classes Overview
+
+### Catan
+
+- Manages the overall game flow.
+- Holds references to players, the board, and the development cards.
+
+### Player
+
+- Represents a player in the game.
+- Manages player-specific data like resources, settlements, roads, and development cards.
+
+### Board
+
+- Represents the game board.
+- Manages tiles, settlements, roads, and resource distribution.
+
+### DevCard
+
+- Base class for development cards.
+- Derived classes: `Knight`, `VictoryPoint`, `RoadBuilding`, `YearOfPlenty`, and `Monopoly`.
+
