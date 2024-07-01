@@ -302,7 +302,6 @@ pair<map<int, int>, map<int, int>> Player::cardsTrade()
     int yearOfPlenty_give;
     int monopoly_give;
 
-    // cout << "1. Wood 🌲 between 0 - " << resources[0] << ": ";
     cout << "1. Victory Point 0 - " << devCards["VictoryPoint"] << ": ";
     while (1)
     {

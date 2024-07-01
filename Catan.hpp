@@ -27,7 +27,7 @@ private:
     Player &p1;
     Player &p2;
     Player &p3;
-    vector<Player*> players;
+    vector<Player *> players;
     Board &board;
     vector<unique_ptr<DevCard>> devCards;
 
@@ -35,22 +35,28 @@ public:
     Catan(Player &p1, Player &p2, Player &p3, Board &board) : p1(p1), p2(p2), p3(p3), board(board)
     {
 
-        // Knight Cards (Soldier Cards):3 cards
-        // Victory Point Cards: 4 cards
+        // Knight Cards (Soldier Cards): 5 cards
+        // Victory Point Cards: 3 cards
         // Road Building Cards: 2 cards
         // Year of Plenty Cards: 2 cards
         // Monopoly Cards: 2 cards
         devCards.push_back(std::make_unique<Knight>());
         devCards.push_back(std::make_unique<Knight>());
         devCards.push_back(std::make_unique<Knight>());
+        devCards.push_back(std::make_unique<Knight>());
+        devCards.push_back(std::make_unique<Knight>());
+        devCards.push_back(std::make_unique<Knight>());
+
         devCards.push_back(std::make_unique<VictoryPoint>());
         devCards.push_back(std::make_unique<VictoryPoint>());
         devCards.push_back(std::make_unique<VictoryPoint>());
-        devCards.push_back(std::make_unique<VictoryPoint>());
+
         devCards.push_back(std::make_unique<RoadBuilding>());
         devCards.push_back(std::make_unique<RoadBuilding>());
+
         devCards.push_back(std::make_unique<YearOfPlenty>());
         devCards.push_back(std::make_unique<YearOfPlenty>());
+        
         devCards.push_back(std::make_unique<Monopoly>());
         devCards.push_back(std::make_unique<Monopoly>());
 
@@ -84,6 +90,7 @@ public:
     void ResourceDistribution(Board &board, int diceRoll);
     unique_ptr<DevCard> getCard();
     int inputInt();
+    vector<unique_ptr<DevCard>> &getDevCards(); // get dev cards in bank
 };
 
 #endif // CATAN_HPP

@@ -441,6 +441,11 @@ int Catan::inputInt()
     return input;
 }
 
+vector<unique_ptr<DevCard>> &Catan::getDevCards()
+{
+    return devCards;
+}
+
 int Catan::resourceTrade(Player &player, Player &player2, Player &player3)
 {
     cout << "You have the following resources: " << endl;

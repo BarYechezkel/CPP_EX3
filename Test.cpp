@@ -266,6 +266,126 @@ TEST_CASE("place city")
     }
 }
 
+TEST_CASE("place road")
+
+{
+    SUBCASE("place in first round")
+    {
+        Board board;
+        Player player1("A");
+        player1.setColor(RED);
+        Player player2("B");
+        player2.setColor(BLUE);
+        Player player3("C");
+        player3.setColor(GREEN);
+        Catan catan(player1, player2, player3, board);
+        CHECK(player1.placeSettlementFirst(board, 0) == true);
+        CHECK(player1.placeRoad(board, 0) == true);
+        CHECK(board.getEdge(0)->getPlayerColor() == player1.getColor());
+        CHECK(player1.getPoints() == 1);
+        CHECK(player2.placeRoad(board, 0) == false);
+        CHECK(player3.placeRoad(board, 0) == false);
+    }
+
+    SUBCASE("place seconed road near the first one")
+    {
+        Board board;
+        Player player1("A");
+        player1.setColor(RED);
+        Player player2("B");
+        player2.setColor(BLUE);
+        Player player3("C");
+        player3.setColor(GREEN);
+        Catan catan(player1, player2, player3, board);
+        CHECK(player1.placeSettlementFirst(board, 0) == true);
+        CHECK(player1.placeRoad(board, 0) == true);
+        CHECK(player1.placeRoad(board, 6) == true); // 6 edge is neighbor to 0 edge
+        CHECK(board.getEdge(6)->getPlayerColor() == player1.getColor());
+    }
+
+    SUBCASE("place player1 road near player2 road is not allowed")
+    {
+        Board board;
+        Player player1("A");
+        player1.setColor(RED);
+        Player player2("B");
+        player2.setColor(BLUE);
+        Player player3("C");
+        player3.setColor(GREEN);
+        Catan catan(player1, player2, player3, board);
+        CHECK(player1.placeSettlementFirst(board, 39) == true);
+        CHECK(player1.placeRoad(board, 55) == true);
+        CHECK(player2.placeRoad(board, 63) == false); // 55 edge is neighbor to 63 edge
+        CHECK(board.getEdge(6)->getPlayerColor() == 0);
+    }
+
+    SUBCASE("place road without any settlements")
+    {
+        Board board;
+        Player player1("A");
+        player1.setColor(RED);
+        Player player2("B");
+        player2.setColor(BLUE);
+        Player player3("C");
+        player3.setColor(GREEN);
+        Catan catan(player1, player2, player3, board);
+        CHECK(player1.placeRoad(board, 0) == false);
+    }
+
+    SUBCASE("place near a road")
+    {
+        Board board;
+        Player player1("A");
+        player1.setColor(RED);
+        Player player2("B");
+        player2.setColor(BLUE);
+        Player player3("C");
+        player3.setColor(GREEN);
+        Catan catan(player1, player2, player3, board);
+        CHECK(player1.placeSettlementFirst(board, 0) == true);
+        CHECK(player1.placeRoad(board, 0) == true);
+        CHECK(player1.placeRoad(board, 6) == true);
+        CHECK(player1.placeRoad(board, 5) == false); // 5 edge is not neighbor to 6 edge
+
+
+    }
+
+    SUBCASE("place near a road that is not owned by the player")
+    {
+        Board board;
+        Player player1("A");
+        player1.setColor(RED);
+        Player player2("B");
+        player2.setColor(BLUE);
+        Player player3("C");
+        player3.setColor(GREEN);
+        Catan catan(player1, player2, player3, board);
+        CHECK(player1.placeSettlementFirst(board, 0) == true);
+        CHECK(player1.placeRoad(board, 0) == true);
+        CHECK(player2.placeRoad(board, 6) == false);
+     
+    }
+
+    SUBCASE("try to place in taken vertex")
+    {
+        Board board;
+        Player player1("A");
+        player1.setColor(RED);
+        Player player2("B");
+        player2.setColor(BLUE);
+        Player player3("C");
+        player3.setColor(GREEN);
+        Catan catan(player1, player2, player3, board);
+        CHECK(player1.placeSettlementFirst(board, 0) == true);
+        CHECK(player1.placeRoad(board, 0) == true);
+        CHECK(player2.placeSettlementFirst(board, 6) == true);
+        CHECK(player1.placeRoad(board, 6) == true);
+        CHECK(player2.placeRoad(board, 6) == false);
+       
+    }
+
+}
+
 TEST_CASE("Enough resources to buy a settlement, road, or city")
 {
     SUBCASE("player has enough resources to place a settlement")
@@ -453,7 +573,7 @@ TEST_CASE("Trade resources")
         cout << "---------------------------------------------------------" << endl;
     }
 
-     SUBCASE("No player wants to trade")
+    SUBCASE("No player wants to trade")
     {
         cout << "trade--------------------------------------------------------" << endl;
         Board board;
@@ -475,7 +595,7 @@ TEST_CASE("Trade resources")
         player2.addResource(SHEEP, 0);
         player2.addResource(WHEAT, 0);
         player2.addResource(IRON, 1);
-       
+
         // Save the original buffer of std::cin
         std::streambuf *cinBuffer = std::cin.rdbuf();
         // Create a new input stream with the input you want to test
@@ -513,7 +633,7 @@ TEST_CASE("Trade resources")
         player2.addResource(WHEAT, 0);
         player2.addResource(IRON, 0);
 
-         // Save the original buffer of std::cin
+        // Save the original buffer of std::cin
         std::streambuf *cinBuffer = std::cin.rdbuf();
         // Create a new input stream with the input you want to test
         std::istringstream testInput("1\n1\n1\n0\n0\n0\n0\n0\n0\n0\n1\n"); // Redirect std::cin to your input stream
@@ -522,7 +642,6 @@ TEST_CASE("Trade resources")
         CHECK(catan.resourceTrade(player1, player2, player3) == false);
         cout << "---------------------------------------------------------" << endl;
     }
-    
 }
 
 TEST_CASE("Using dev cards")
@@ -566,7 +685,7 @@ TEST_CASE("Using dev cards")
         player1.addCard(move(card2));
         player1.addCard(move(card3));
         player1.printCards();
-          // Save the original buffer of std::cin
+        // Save the original buffer of std::cin
         std::streambuf *cinBuffer = std::cin.rdbuf();
         // Create a new input stream with the input you want to test
         std::istringstream testInput("2\n"); // Redirect std::cin to your input stream
@@ -595,7 +714,7 @@ TEST_CASE("Using dev cards")
         player1.addCard(move(card1));
         player1.addCard(move(card2));
         player1.printCards();
-          // Save the original buffer of std::cin
+        // Save the original buffer of std::cin
         std::streambuf *cinBuffer = std::cin.rdbuf();
         // Create a new input stream with the input you want to test
         std::istringstream testInput("2\n"); // Redirect std::cin to your input stream
@@ -603,7 +722,7 @@ TEST_CASE("Using dev cards")
         CHECK(player1.playDevCard(board, players) == 6); // return 6 if player has less then 3 knight card
     }
 
-    SUBCASE ("Use victory point card")
+    SUBCASE("Use victory point card")
     {
         Board board;
         Player player1("A");
@@ -620,7 +739,7 @@ TEST_CASE("Using dev cards")
         unique_ptr<DevCard> card1 = make_unique<VictoryPoint>();
         player1.addCard(move(card1));
         player1.printCards();
-          // Save the original buffer of std::cin
+        // Save the original buffer of std::cin
         std::streambuf *cinBuffer = std::cin.rdbuf();
         // Create a new input stream with the input you want to test
         std::istringstream testInput("1\n"); // Redirect std::cin to your input stream
@@ -648,7 +767,7 @@ TEST_CASE("Using dev cards")
         unique_ptr<DevCard> card1 = make_unique<RoadBuilding>();
         player1.addCard(move(card1));
         player1.printCards();
-          // Save the original buffer of std::cin
+        // Save the original buffer of std::cin
         std::streambuf *cinBuffer = std::cin.rdbuf();
         // Create a new input stream with the input you want to test
         std::istringstream testInput("3\n0\n6\n"); // Redirect std::cin to your input stream
@@ -658,7 +777,7 @@ TEST_CASE("Using dev cards")
         CHECK(board.getEdge(6)->getPlayerColor() == player1.getColor());
     }
 
-    SUBCASE( "Use year of plenty card")
+    SUBCASE("Use year of plenty card")
     {
         cout << "dev card--------------------------------------------------------" << endl;
         Board board;
@@ -676,7 +795,7 @@ TEST_CASE("Using dev cards")
         unique_ptr<DevCard> card1 = make_unique<YearOfPlenty>();
         player1.addCard(move(card1));
         player1.printCards();
-          // Save the original buffer of std::cin
+        // Save the original buffer of std::cin
         std::streambuf *cinBuffer = std::cin.rdbuf();
         // Create a new input stream with the input you want to test
         std::istringstream testInput("4\n1\n2\n"); // Redirect std::cin to your input stream
@@ -719,7 +838,7 @@ TEST_CASE("Using dev cards")
         unique_ptr<DevCard> card1 = make_unique<Monopoly>();
         player1.addCard(move(card1));
         player1.printCards();
-          // Save the original buffer of std::cin
+        // Save the original buffer of std::cin
         std::streambuf *cinBuffer = std::cin.rdbuf();
         // Create a new input stream with the input you want to test
         std::istringstream testInput("5\n5\n"); // Redirect std::cin to your input stream
@@ -731,213 +850,234 @@ TEST_CASE("Using dev cards")
         CHECK(player1.getResources()[BRICK] == 1);
         CHECK(player1.getResources()[IRON] == 1);
         CHECK(player2.getResources()[IRON] == 0);
-
     }
 }
 
-//trade cards\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-//check if it needded vvvvvvvvvvvvvvvvvvvv
-
-      
-
-
-
-
-
-
-
-
-
-
-
-      
-
-// SUBCASE("place near a settlement")
-// {
-//     Board board;
-//     Player player1("A");
-//     player1.setColor(RED);
-//     Catan catan(player1, player1, player1, board);
-
-//     // give player1 a resource to make him able to place a settlement
-//     player1.addResource(WOOD, 3);
-//     player1.addResource(BRICK, 3);
-//     player1.addResource(SHEEP, 1);
-//     player1.addResource(WHEAT, 1);
-//     // cost of road is 1 wood and 1 brick
-//     // cost of settlement is 1 wood, 1 brick, 1 sheep, 1 wheat
-
-//     player1.placeSettlementFirst(board, 0);
-//     // Save the original buffer of std::cin
-//     std::streambuf *cinBuffer = std::cin.rdbuf();
-//     // Create a new input stream with the input you want to test
-//     std::istringstream testInput("0\n1\n"); // Redirect std::cin to your input stream
-//     std::cin.rdbuf(testInput.rdbuf());
-//     player1.printResources();
-
-//     CHECK(player1.placeSettlementUtil(board) == true); // get input:0 ,check if player has enough resources to place a city
-//     CHECK(player1.placeSettlementUtil(board) == true); // get input:1 , check if player has enough resources to place a city
-//     CHECK(board.getVertex(1)->getColor() == player1.getColor());
-//     CHECK(player1.getPoints() ==
-
-TEST_CASE("place road")
+TEST_CASE("Trades cards")
 {
-    SUBCASE("place in first round")
+    SUBCASE("Catan has 15 dev cards")
     {
         Board board;
         Player player1("A");
-        player1.setColor(RED);
         Player player2("B");
-        player2.setColor(BLUE);
         Player player3("C");
+        player1.setColor(RED);
+        player2.setColor(BLUE);
         player3.setColor(GREEN);
         Catan catan(player1, player2, player3, board);
-        CHECK(player1.placeSettlementFirst(board, 0) == true);
-        CHECK(player1.placeRoad(board, 0) == true);
-        CHECK(board.getEdge(0)->getPlayerColor() == player1.getColor());
-        CHECK(player1.getPoints() == 1);
-        CHECK(player2.placeRoad(board, 0) == false);
-        CHECK(player3.placeRoad(board, 0) == false);
+        CHECK(catan.getDevCards().size() == 15);
+    }
+    SUBCASE("player has enough cards to trade")
+    {
+        // 1 victoryPoint_give;
+        // 2 knight_give;
+        // 3 roadBuilding_give;
+        // 4 yearOfPlenty_give;
+        // 5 monopoly_give;
+        Board board;
+        Player player1("A");
+        Player player2("B");
+        Player player3("C");
+        player1.setColor(RED);
+        player2.setColor(BLUE);
+        player3.setColor(GREEN);
+        Catan catan(player1, player1, player1, board);
+        unique_ptr<DevCard> card1 = make_unique<YearOfPlenty>();
+        unique_ptr<DevCard> card2 = make_unique<Monopoly>();
+        unique_ptr<DevCard> card3 = make_unique<Monopoly>();
+        player1.addCard(move(card1));
+        player1.addCard(move(card2));
+        player1.addCard(move(card3));
+
+        unique_ptr<DevCard> card4 = make_unique<RoadBuilding>();
+        unique_ptr<DevCard> card5 = make_unique<VictoryPoint>();
+        unique_ptr<DevCard> card6 = make_unique<Knight>();
+        player2.addCard(move(card4));
+        player2.addCard(move(card5));
+        player2.addCard(move(card6));
+        CHECK(player1.getDevCards().size() == 3);
+        CHECK(player2.getDevCards().size() == 3);
+        CHECK(player1.getCards()["Monopoly"] == 2);
+        CHECK(player1.getCards()["YearOfPlenty"] == 1);
+        CHECK(player2.getCards()["RoadBuilding"] == 1);
+        CHECK(player2.getCards()["VictoryPoint"] == 1);
+        CHECK(player2.getCards()["Knight"] == 1);
+        // Save the original buffer of std::cin
+        std::streambuf *cinBuffer = std::cin.rdbuf();
+        // Create a new input stream with the input you want to test
+        std::istringstream testInput("1\n0\n0\n0\n1\n2\n1\n1\n1\n0\n0\n1\n"); // Redirect std::cin to your input stream
+        std::cin.rdbuf(testInput.rdbuf());
+        CHECK(catan.cardsTrade(player1, player2, player3) == true); // return 1 if trade success
+    }
+    SUBCASE("No player wants to trade")
+    {
+        // 1 victoryPoint_give;
+        // 2 knight_give;
+        // 3 roadBuilding_give;
+        // 4 yearOfPlenty_give;
+        // 5 monopoly_give;
+        Board board;
+        Player player1("A");
+        Player player2("B");
+        Player player3("C");
+        player1.setColor(RED);
+        player2.setColor(BLUE);
+        player3.setColor(GREEN);
+        Catan catan(player1, player1, player1, board);
+        unique_ptr<DevCard> card1 = make_unique<YearOfPlenty>();
+        unique_ptr<DevCard> card2 = make_unique<Monopoly>();
+        unique_ptr<DevCard> card3 = make_unique<Monopoly>();
+        player1.addCard(move(card1));
+        player1.addCard(move(card2));
+        player1.addCard(move(card3));
+
+        unique_ptr<DevCard> card4 = make_unique<RoadBuilding>();
+        unique_ptr<DevCard> card5 = make_unique<VictoryPoint>();
+        unique_ptr<DevCard> card6 = make_unique<Knight>();
+        player2.addCard(move(card4));
+        player2.addCard(move(card5));
+        player2.addCard(move(card6));
+        CHECK(player1.getDevCards().size() == 3);
+        CHECK(player2.getDevCards().size() == 3);
+        CHECK(player1.getCards()["Monopoly"] == 2);
+        CHECK(player1.getCards()["YearOfPlenty"] == 1);
+        CHECK(player2.getCards()["RoadBuilding"] == 1);
+        CHECK(player2.getCards()["VictoryPoint"] == 1);
+        CHECK(player2.getCards()["Knight"] == 1);
+        // Save the original buffer of std::cin
+        std::streambuf *cinBuffer = std::cin.rdbuf();
+        // Create a new input stream with the input you want to test
+        std::istringstream testInput("1\n0\n0\n0\n1\n2\n1\n1\n1\n0\n0\n2\n"); // Redirect std::cin to your input stream
+        std::cin.rdbuf(testInput.rdbuf());
+        CHECK(catan.cardsTrade(player1, player2, player3) == false); // player 2 doesn't want to trade
     }
 
-    SUBCASE("place seconed road near the first one")
+    SUBCASE("player2 doesn't have cards that player1 want")
+    {
+        // 1 victoryPoint_give;
+        // 2 knight_give;
+        // 3 roadBuilding_give;
+        // 4 yearOfPlenty_give;
+        // 5 monopoly_give;
+        Board board;
+        Player player1("A");
+        Player player2("B");
+        Player player3("C");
+        player1.setColor(RED);
+        player2.setColor(BLUE);
+        player3.setColor(GREEN);
+        Catan catan(player1, player1, player1, board);
+        unique_ptr<DevCard> card1 = make_unique<YearOfPlenty>();
+        unique_ptr<DevCard> card2 = make_unique<Monopoly>();
+        unique_ptr<DevCard> card3 = make_unique<Monopoly>();
+        player1.addCard(move(card1));
+        player1.addCard(move(card2));
+        player1.addCard(move(card3));
+        unique_ptr<DevCard> card4 = make_unique<RoadBuilding>();
+        player2.addCard(move(card4));
+        CHECK(player1.getDevCards().size() == 3);
+        CHECK(player2.getDevCards().size() == 1);
+        CHECK(player1.getCards()["Monopoly"] == 2);
+        CHECK(player1.getCards()["YearOfPlenty"] == 1);
+        CHECK(player2.getCards()["RoadBuilding"] == 1);
+        // Save the original buffer of std::cin
+        std::streambuf *cinBuffer = std::cin.rdbuf();
+        // Create a new input stream with the input you want to test
+        std::istringstream testInput("1\n0\n0\n0\n1\n2\n1\n1\n1\n0\n0\n"); // Redirect std::cin to your input stream
+        std::cin.rdbuf(testInput.rdbuf());
+        CHECK(catan.cardsTrade(player1, player2, player3) == false); // player 2 doesn't want to trade
+    }
+
+    SUBCASE("all players start without dev cards")
+    {
+        // 1 victoryPoint_give;
+        // 2 knight_give;
+        // 3 roadBuilding_give;
+        // 4 yearOfPlenty_give;
+        // 5 monopoly_give;
+        Board board;
+        Player player1("A");
+        Player player2("B");
+        Player player3("C");
+        player1.setColor(RED);
+        player2.setColor(BLUE);
+        player3.setColor(GREEN);
+        Catan catan(player1, player1, player1, board);
+        CHECK(player1.getDevCards().size() == 0);
+        CHECK(player2.getDevCards().size() == 0);
+        CHECK(player3.getDevCards().size() == 0);
+    }
+    SUBCASE("player want to play dev cards but he doesn't have any")
     {
         Board board;
         Player player1("A");
-        player1.setColor(RED);
         Player player2("B");
-        player2.setColor(BLUE);
         Player player3("C");
+        player1.setColor(RED);
+        player2.setColor(BLUE);
         player3.setColor(GREEN);
+        vector<Player *> players;
+        players.push_back(&player1);
+        players.push_back(&player2);
+        players.push_back(&player3);
         Catan catan(player1, player2, player3, board);
-        CHECK(player1.placeSettlementFirst(board, 0) == true);
-        CHECK(player1.placeRoad(board, 0) == true);
-        CHECK(player1.placeRoad(board, 6) == true); // 6 edge is neighbor to 0 edge
-        CHECK(board.getEdge(6)->getPlayerColor() == player1.getColor());
+        CHECK(player1.playDevCard(board, players) == false);
     }
+}
 
-    SUBCASE("place player1 road near player2 road is not allowed")
+TEST_CASE("check dice7 rolled")
+{
+    SUBCASE("dice7 rolled")
     {
         Board board;
         Player player1("A");
-        player1.setColor(RED);
         Player player2("B");
-        player2.setColor(BLUE);
         Player player3("C");
+        player1.setColor(RED);
+        player2.setColor(BLUE);
         player3.setColor(GREEN);
         Catan catan(player1, player2, player3, board);
-        CHECK(player1.placeSettlementFirst(board, 39) == true);
-        CHECK(player1.placeRoad(board, 55) == true);
-        CHECK(player2.placeRoad(board, 63) == false); // 55 edge is neighbor to 63 edge
-        CHECK(board.getEdge(6)->getPlayerColor() == 0);
+        player1.addResource(WOOD, 5);
+        player1.addResource(BRICK, 5);
+        player1.addResource(SHEEP, 5);
+        player1.addResource(WHEAT, 5);
+        player1.addResource(IRON, 4);
+
+        player2.addResource(WOOD, 2);
+        player2.addResource(BRICK, 2);
+        player2.addResource(SHEEP, 2);
+        player2.addResource(WHEAT, 2);
+        player2.addResource(IRON, 2);
+
+        player3.addResource(WOOD, 1);
+        player3.addResource(BRICK, 1);
+        player3.addResource(SHEEP, 1);
+        player3.addResource(WHEAT, 1);
+        player3.addResource(IRON, 1);
+        // Save the original buffer of std::cin
+        std::streambuf *cinBuffer = std::cin.rdbuf();
+        // Create a new input stream with the input you want to test
+        std::istringstream testInput("3\n3\n3\n3\n0\n1\n1\n1\n1\n1\n"); // Redirect std::cin to your input stream
+        std::cin.rdbuf(testInput.rdbuf());
+        catan.Dice7();
+        // player1 has 24 cards so need to give 1/2 of the resources
+        CHECK(player1.getResources()[WOOD] == 2);
+        CHECK(player1.getResources()[BRICK] == 2);
+        CHECK(player1.getResources()[SHEEP] == 2);
+        CHECK(player1.getResources()[WHEAT] == 2);
+        CHECK(player1.getResources()[IRON] == 4);
+        // player2 has 10 cards so need to give 1/2 of the resources
+        CHECK(player2.getResources()[WOOD] == 1);
+        CHECK(player2.getResources()[BRICK] == 1);
+        CHECK(player2.getResources()[SHEEP] == 1);
+        CHECK(player2.getResources()[WHEAT] == 1);
+        CHECK(player2.getResources()[IRON] == 1);
+        // player3 has 5 cards so need to give 1/2 of the resources
+        CHECK(player3.getResources()[WOOD] == 1);
+        CHECK(player3.getResources()[BRICK] == 1);
+        CHECK(player3.getResources()[SHEEP] == 1);
+        CHECK(player3.getResources()[WHEAT] == 1);
+        CHECK(player3.getResources()[IRON] == 1);
     }
-
-    SUBCASE("place road without any settlements")
-    {
-        Board board;
-        Player player1("A");
-        player1.setColor(RED);
-        Player player2("B");
-        player2.setColor(BLUE);
-        Player player3("C");
-        player3.setColor(GREEN);
-        Catan catan(player1, player2, player3, board);
-        CHECK(player1.placeRoad(board, 0) == false);
-    }
-
-    SUBCASE("place near a road")
-    {
-        // Board board;
-        // Player player1("A");
-        // player1.setColor(RED);
-        // Catan catan(player1, player1, player1, board);
-
-        // // give player1 a resource to make him able to place a settlement
-        // player1.addResource(WOOD, 3);
-        // player1.addResource(BRICK, 3);
-        // player1.addResource(SHEEP, 1);
-        // player1.addResource(WHEAT, 1);
-        // // cost of road is 1 wood and 1 brick
-        // // cost of settlement is 1 wood, 1 brick, 1 sheep, 1 wheat
-
-        // player1.placeSettlementFirst(board, 0);
-        // // Save the original buffer of std::cin
-        // std::streambuf *cinBuffer = std::cin.rdbuf();
-        // // Create a new input stream with the input you want to test
-        // std::istringstream testInput("0\n6\n7\n"); // Redirect std::cin to your input stream
-        // std::cin.rdbuf(testInput.rdbuf());
-        // player1.printResources();
-
-        // CHECK(player1.placeRoadUtil(board) == true);       // get input:0 ,check if player has enough resources to place a city
-        // CHECK(player1.placeSettlement(board, 7) == false); // there is 1 road between 0 and 7
-        // CHECK(player1.placeRoadUtil(board) == true);       // get input:6 ,check if player has enough resources to place a city
-        // CHECK(player1.placeSettlementUtil(board) == true); // get input:7 , check if player has enough resources to place a city
-        // CHECK(board.getVertex(7)->getColor() == player1.getColor());
-        // CHECK(player1.getPoints() == 2);
-    }
-
-    SUBCASE("place near a road that is not owned by the player")
-    {
-        //     Player player1(PlayerColor::RED);
-        //     Player player2(PlayerColor::BLUE);
-        //     Catan catan(player1, player2, player2);
-
-        //     // give player2 a resource to make him able to place a settlement
-        //     player2.add_resource(resource::WOOD, 1);
-        //     player2.add_resource(resource::CLAY, 1);
-        //     player2.add_resource(resource::SHEEP, 1);
-        //     player2.add_resource(resource::WHEAT, 1);
-
-        //     catan.place_settlement(34, player1, true);
-        //     catan.place_road(41, player1, true);
-        //     catan.place_road(40, player1, true);
-        //     CHECK_THROWS(catan.place_settlement(33, player2));
-    }
-
-    SUBCASE("try to place in taken vertex")
-    {
-        //     Player player1(PlayerColor::RED);
-        //     Player player2(PlayerColor::BLUE);
-        //     Player player3(PlayerColor::YELLOW);
-        //     Catan catan(player1, player2, player3);
-
-        //     // give player2 a resource to make him able to place a settlement
-        //     player2.add_resource(resource::WOOD, 1);
-        //     player2.add_resource(resource::CLAY, 1);
-        //     player2.add_resource(resource::SHEEP, 1);
-        //     player2.add_resource(resource::WHEAT, 1);
-
-        //     catan.place_settlement(8, player1, true);
-        //     CHECK_THROWS(catan.place_settlement(8, player2));
-        //     // check that the vertex is still owned by player1
-        //     CHECK(catan.get_vertices()[8].get_owner() == &player1);
-        //     // check that player2 still have the resources
-        //     CHECK(player2.get_resource_count(resource::WOOD) == 1);
-        //     CHECK(player2.get_resource_count(resource::CLAY) == 1);
-        //     CHECK(player2.get_resource_count(resource::SHEEP) == 1);
-        //     CHECK(player2.get_resource_count(resource::WHEAT) == 1);
-    }
-
-    SUBCASE("try to place near settlement")
-    {
-        //     Player player1(PlayerColor::RED);
-        //     Player player2(PlayerColor::BLUE);
-        //     Player player3(PlayerColor::YELLOW);
-        //     Catan catan(player1, player2, player3);
-
-        //     catan.place_settlement(8, player1, true);
-        //     CHECK_THROWS(catan.place_settlement(4, player2, true));
-        //     // check that the vertex is still owned by player1
-        //     CHECK(catan.get_vertices()[8].get_owner() == &player1);
-    }
-
-    // SUBCASE("place without any resources") {
-    //     Player player1(PlayerColor::RED);
-    //     Player player2(PlayerColor::BLUE);
-    //     Player player3(PlayerColor::YELLOW);
-    //     Catan catan(player1, player2, player3);
-
-    //     CHECK_THROWS(catan.place_settlement(8, player1));
-    // }
+ 
 }
