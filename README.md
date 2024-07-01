@@ -12,8 +12,6 @@ This project is an implementation of the popular board game Catan using C++.
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Classes Overview](#classes-overview)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
@@ -48,7 +46,11 @@ Make sure you have the following installed:
 
 ## Usage
 
-To start the game, run the compiled executable. The game will initialize the players, board, and development cards, then proceed with the game turns. Follow the on-screen instructions to play.
+To start the game, run the compiled executable. The game will initialize the players, board, and development cards, then proceed with the game turns. Follow the on-screen instructions to play according to the board picture.
+
+- When you need to choose a place for a road, choose the pink number of the edge tile (0-71).
+- When you need to place a settlement or city, choose the black number of the vertex tile (0-53).
+
 
 ## Classes Overview
 
