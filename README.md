@@ -66,8 +66,10 @@ To start the game, run the compiled executable. The game will initialize the pla
 
 - Represents the game board.
 - Manages tiles, settlements, roads, and resource distribution.
+![board](catanBoard.jpg)
 
-### DevCard
+
+### DevCard - Using Inheritance
 
 - Base class for development cards.
 - Derived classes: `Knight`, `VictoryPoint`, `RoadBuilding`, `YearOfPlenty`, and `Monopoly`.
