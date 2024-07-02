@@ -1,18 +1,15 @@
 #include "Board.hpp"
 
-Board::Board()
-{
+Board::Board() {
     Init_Board();
 }
 
-void Board::Init_Board()
-{
+void Board::Init_Board() {
     cout << "Init_Board" << endl;
 
     // init 54 verteices and put them in a vector
     vertices.resize(54);
-    for (int i = 0; i < 54; i++)
-    {
+    for (int i = 0; i < 54; i++) {
         vertices[i] = Vertex(i);
     }
 
@@ -204,20 +201,23 @@ void Board::Init_Board()
     InitVerticesAdjacencyEdges();
 }
 
-
-
-Vertex* Board::getVertex(int id_num)
-{
+Vertex *Board::getVertex(int id_num) {
     return &vertices[id_num];
 }
 
-Edge* Board::getEdge(int id_num)
-{
+Edge *Board::getEdge(int id_num) {
     return &edges[id_num];
 }
 
-void Board::InitResourcesAndNumbers()
-{
+vector<Vertex> &Board::getVertices() {
+    return vertices;
+}
+
+vector<Tile> *Board::getTiles() {
+    return &tiles;
+}
+
+void Board::InitResourcesAndNumbers() {
     // array of resources
     int resources[18] = {WOOD, WOOD, WOOD, WOOD, BRICK, BRICK, BRICK, SHEEP, SHEEP, SHEEP, SHEEP, WHEAT, WHEAT, WHEAT, WHEAT, IRON, IRON, IRON};
     // set desert tile in the middle
@@ -228,34 +228,28 @@ void Board::InitResourcesAndNumbers()
     // shuffle the resources
     // set random resource and number for each tile,
     // each resource and number will be used only once
-    for (int i = 0; i < 9; i++)
-    {
+    for (int i = 0; i < 9; i++) {
         int random1 = rand() % 18;
-        while (resources[random1] == -1)
-        {
+        while (resources[random1] == -1) {
             random1 = rand() % 18;
         }
         tiles[i].setResource(resources[random1]);
         int random2 = rand() % 18;
-        while (numbers[random2] == -1)
-        {
+        while (numbers[random2] == -1) {
             random2 = rand() % 18;
         }
         tiles[i].setNumber(numbers[random2]);
         resources[random1] = -1;
         numbers[random2] = -1;
     }
-    for (int i = 10; i < 19; i++)
-    {
+    for (int i = 10; i < 19; i++) {
         int random1 = rand() % 18;
-        while (resources[random1] == -1)
-        {
+        while (resources[random1] == -1) {
             random1 = rand() % 18;
         }
         tiles[i].setResource(resources[random1]);
         int random2 = rand() % 18;
-        while (numbers[random2] == -1)
-        {
+        while (numbers[random2] == -1) {
             random2 = rand() % 18;
         }
         tiles[i].setNumber(numbers[random2]);
@@ -270,84 +264,80 @@ void Board::InitResourcesAndNumbers()
     //  }
 }
 
-void Board::printBoard()
-{
-    for (size_t i = 0; i < 19; i++)
-    {
+void Board::printBoard() {
+    for (size_t i = 0; i < 19; i++) {
         tiles[i].printTile();
         cout << endl;
     }
 }
 
-void Board::InitVerticesResources()
-{
-    for (size_t i = 0; i < 19; i++)
-    {
+vector<Tile> &Board::getBoard() {
+    return tiles;
+}
+
+void Board::InitVerticesResources() {
+    for (size_t i = 0; i < 19; i++) {
         int resource = tiles[i].getResource();
-        for (size_t j = 0; j < tiles[i].getVertices().size(); j++)
-        {
+        for (size_t j = 0; j < tiles[i].getVertices().size(); j++) {
             tiles[i].getVertices()[j]->addResource(resource);
             // cout << "Vertex " << tiles[i].getVertices()[j]->getId() << " has resource " << resource << endl;
         }
     }
 }
 
-void Board::InitVerticesAdjacencyEdges()
-{
-    vertices[0].addEdges({&edges[0],&edges[1]});
-    vertices[1].addEdges({&edges[2],&edges[3]});
-    vertices[2].addEdges({&edges[4],&edges[5]});
-    vertices[3].addEdges({&edges[0],&edges[6]});
-    vertices[4].addEdges({&edges[1],&edges[7],&edges[2]});
-    vertices[5].addEdges({&edges[3],&edges[8],&edges[4]});
-    vertices[6].addEdges({&edges[5],&edges[9]});
-    vertices[7].addEdges({&edges[6],&edges[10],&edges[11]});
-    vertices[8].addEdges({&edges[7],&edges[12],&edges[13]});
-    vertices[9].addEdges({&edges[8],&edges[14],&edges[15]});
-    vertices[10].addEdges({&edges[9],&edges[16],&edges[17]});
-    vertices[11].addEdges({&edges[10],&edges[18]});
-    vertices[12].addEdges({&edges[11],&edges[19],&edges[12]});
-    vertices[13].addEdges({&edges[13],&edges[20],&edges[14]});
-    vertices[14].addEdges({&edges[15],&edges[21],&edges[16]});
-    vertices[15].addEdges({&edges[17],&edges[22]});
-    vertices[16].addEdges({&edges[18],&edges[23],&edges[24]});
-    vertices[17].addEdges({&edges[19],&edges[25],&edges[26]});
-    vertices[18].addEdges({&edges[20],&edges[27],&edges[28]});
-    vertices[19].addEdges({&edges[21],&edges[29],&edges[30]});
-    vertices[20].addEdges({&edges[22],&edges[31],&edges[32]});
-    vertices[21].addEdges({&edges[23],&edges[33]});
-    vertices[22].addEdges({&edges[24],&edges[34],&edges[25]});
-    vertices[23].addEdges({&edges[26],&edges[35],&edges[27]});
-    vertices[24].addEdges({&edges[28],&edges[36],&edges[29]});
-    vertices[25].addEdges({&edges[30],&edges[37],&edges[31]});
-    vertices[26].addEdges({&edges[32],&edges[38]});
-    vertices[27].addEdges({&edges[33],&edges[39]});
-    vertices[28].addEdges({&edges[34],&edges[40],&edges[41]});
-    vertices[29].addEdges({&edges[35],&edges[42],&edges[43]});
-    vertices[30].addEdges({&edges[36],&edges[44],&edges[45]});
-    vertices[31].addEdges({&edges[37],&edges[46],&edges[47]});
-    vertices[32].addEdges({&edges[38],&edges[48]});
-    vertices[33].addEdges({&edges[39],&edges[49],&edges[40]});
-    vertices[34].addEdges({&edges[41],&edges[50],&edges[42]});
-    vertices[35].addEdges({&edges[43],&edges[51],&edges[44]});
-    vertices[36].addEdges({&edges[45],&edges[52],&edges[46]});
-    vertices[37].addEdges({&edges[47],&edges[53]});
-    vertices[38].addEdges({&edges[49],&edges[54]});
-    vertices[39].addEdges({&edges[50],&edges[55],&edges[56]});
-    vertices[40].addEdges({&edges[51],&edges[57],&edges[58]});
-    vertices[41].addEdges({&edges[52],&edges[59],&edges[60]});
-    vertices[42].addEdges({&edges[53],&edges[61]});
-    vertices[43].addEdges({&edges[54],&edges[62],&edges[55]});
-    vertices[44].addEdges({&edges[56],&edges[63],&edges[57]});
-    vertices[45].addEdges({&edges[58],&edges[64],&edges[59]});
-    vertices[46].addEdges({&edges[60],&edges[65]});
-    vertices[47].addEdges({&edges[62],&edges[66]});
-    vertices[48].addEdges({&edges[63],&edges[67],&edges[68]});
-    vertices[49].addEdges({&edges[64],&edges[69],&edges[70]});
-    vertices[50].addEdges({&edges[65],&edges[71]});
-    vertices[51].addEdges({&edges[66],&edges[67]});
-    vertices[52].addEdges({&edges[68],&edges[69],&edges[70]});
+void Board::InitVerticesAdjacencyEdges() {
+    vertices[0].addEdges({&edges[0], &edges[1]});
+    vertices[1].addEdges({&edges[2], &edges[3]});
+    vertices[2].addEdges({&edges[4], &edges[5]});
+    vertices[3].addEdges({&edges[0], &edges[6]});
+    vertices[4].addEdges({&edges[1], &edges[7], &edges[2]});
+    vertices[5].addEdges({&edges[3], &edges[8], &edges[4]});
+    vertices[6].addEdges({&edges[5], &edges[9]});
+    vertices[7].addEdges({&edges[6], &edges[10], &edges[11]});
+    vertices[8].addEdges({&edges[7], &edges[12], &edges[13]});
+    vertices[9].addEdges({&edges[8], &edges[14], &edges[15]});
+    vertices[10].addEdges({&edges[9], &edges[16], &edges[17]});
+    vertices[11].addEdges({&edges[10], &edges[18]});
+    vertices[12].addEdges({&edges[11], &edges[19], &edges[12]});
+    vertices[13].addEdges({&edges[13], &edges[20], &edges[14]});
+    vertices[14].addEdges({&edges[15], &edges[21], &edges[16]});
+    vertices[15].addEdges({&edges[17], &edges[22]});
+    vertices[16].addEdges({&edges[18], &edges[23], &edges[24]});
+    vertices[17].addEdges({&edges[19], &edges[25], &edges[26]});
+    vertices[18].addEdges({&edges[20], &edges[27], &edges[28]});
+    vertices[19].addEdges({&edges[21], &edges[29], &edges[30]});
+    vertices[20].addEdges({&edges[22], &edges[31], &edges[32]});
+    vertices[21].addEdges({&edges[23], &edges[33]});
+    vertices[22].addEdges({&edges[24], &edges[34], &edges[25]});
+    vertices[23].addEdges({&edges[26], &edges[35], &edges[27]});
+    vertices[24].addEdges({&edges[28], &edges[36], &edges[29]});
+    vertices[25].addEdges({&edges[30], &edges[37], &edges[31]});
+    vertices[26].addEdges({&edges[32], &edges[38]});
+    vertices[27].addEdges({&edges[33], &edges[39]});
+    vertices[28].addEdges({&edges[34], &edges[40], &edges[41]});
+    vertices[29].addEdges({&edges[35], &edges[42], &edges[43]});
+    vertices[30].addEdges({&edges[36], &edges[44], &edges[45]});
+    vertices[31].addEdges({&edges[37], &edges[46], &edges[47]});
+    vertices[32].addEdges({&edges[38], &edges[48]});
+    vertices[33].addEdges({&edges[39], &edges[49], &edges[40]});
+    vertices[34].addEdges({&edges[41], &edges[50], &edges[42]});
+    vertices[35].addEdges({&edges[43], &edges[51], &edges[44]});
+    vertices[36].addEdges({&edges[45], &edges[52], &edges[46]});
+    vertices[37].addEdges({&edges[47], &edges[53]});
+    vertices[38].addEdges({&edges[49], &edges[54]});
+    vertices[39].addEdges({&edges[50], &edges[55], &edges[56]});
+    vertices[40].addEdges({&edges[51], &edges[57], &edges[58]});
+    vertices[41].addEdges({&edges[52], &edges[59], &edges[60]});
+    vertices[42].addEdges({&edges[53], &edges[61]});
+    vertices[43].addEdges({&edges[54], &edges[62], &edges[55]});
+    vertices[44].addEdges({&edges[56], &edges[63], &edges[57]});
+    vertices[45].addEdges({&edges[58], &edges[64], &edges[59]});
+    vertices[46].addEdges({&edges[60], &edges[65]});
+    vertices[47].addEdges({&edges[62], &edges[66]});
+    vertices[48].addEdges({&edges[63], &edges[67], &edges[68]});
+    vertices[49].addEdges({&edges[64], &edges[69], &edges[70]});
+    vertices[50].addEdges({&edges[65], &edges[71]});
+    vertices[51].addEdges({&edges[66], &edges[67]});
+    vertices[52].addEdges({&edges[68], &edges[69], &edges[70]});
     vertices[53].addEdges({&edges[71]});
-
 }
-

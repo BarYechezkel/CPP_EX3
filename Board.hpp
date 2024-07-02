@@ -25,26 +25,12 @@ public:
     void InitResourcesAndNumbers();
     void InitVerticesResources();
     void InitVerticesAdjacencyEdges();
-    void InitializationDevCards();
     void printBoard();
-
-    vector<Tile> &getBoard()
-    {
-        return tiles;
-    }
-
+    vector<Tile> &getBoard();
     Vertex *getVertex(int id_num);
     Edge *getEdge(int id_num);
-
-    vector<Vertex> &getVertices()
-    {
-        return vertices;
-    }
-
-    vector<Tile> *getTiles()
-    {
-        return &tiles;
-    }
+    vector<Vertex> &getVertices();
+    vector<Tile> *getTiles();
 };
 
 #endif // BOARD_HPP
