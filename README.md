@@ -1,6 +1,5 @@
 ## Author
 - Bar Yechezkel
-- Email: baryechezkel@gmail.com
 
 # Catan Game Project
 
